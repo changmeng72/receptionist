@@ -1,0 +1,242 @@
+<%- include('sticky_html_start') %>
+ 
+  <div id="page">
+
+        <div class="header header-fixed header-logo-center " style="background-color:#f0f0f0;">
+            <a href="/" class="header-title">
+                <img src="/image/logo.png" class="max-auto mr-1 scale-box" height="30"></img>ABC company
+            </a>
+            <a href="/" data-back-button class="header-icon header-icon-1"><i class="fas fa-arrow-left fa-3x" ></i>
+                <!--img src="/image/cancel.png" height="50"/> </a-->     
+            </a>   
+        </div>
+
+    <!-- footer is removed-->
+        <div id="footer-bar" class="footer-bar-1  bg-gray2-dark">
+        <p class="font-30 font-2000 m-auto color-white">Scroll to the bottom to sign and accept</p>
+      </div>
+      
+
+        <div class="page-content header-clear-medium " style="padding-top:50px;width:80%; margin:auto;position:relative">
+            <div class="content" >
+              <div style="height:30px;"></div>
+              <div id="agreementdoc" class="card pl-5 pr-5 pt-5 pb-5 ">
+                <div class="card-body font-20">
+                    <div class="text-center font-35 font-weight-900 color-blue2 caption-app " ><p> On Site Premises Agreement</p></div>
+                    <div class="divider diverder-margins bg-blue2-dark mt-3 "></div>
+                </div>
+                    <div class="card-body">
+                      <%- include('agreementtxt'); %>
+                    </div> 
+                    <div class="card-body">
+                    <div  id="signature-div" >
+                      <canvas id='signature-1' style="border-style: dotted;"></canvas>        
+                    </div> 
+                  </div>
+                  
+                    <div class="card-body">
+                    <p>Signature</p>
+                    </div>
+                    
+                </div>  
+                  
+                  
+              <div style="margin-left:50px; margin-right:50px;margin-bottom:50px;"> 
+                <hr>
+                
+                <form action="/visitor/agreement" method="post" style="float:right" id="form-1">            
+                    <input id="sig-1" name="signature" value="" type="hidden"/>      
+                    <a href="#" class="btn btn-sm button-s shadow-1 rounded-s text-uppercase font-900 bg-green1-light" type="submit" name="submit" id="btn-accept" >accept</a>   
+                    <a href= "#" class="btn btn-sm button-s shadow-1 rounded-s text-uppercase font-900 bg-blue2-dark" type="reset" id="btn-reset" >reset</a>  
+                    
+                </form>
+            
+              </div>
+            </div>
+          </div>
+
+           <!-- menu zone-->
+           <div id="menu-warning-1" class="menu menu-box-modal rounded-m" 
+           data-menu-height="300" 
+           data-menu-width="310">
+                  <h1 class="text-center mt-4"><i class="fa fa-3x fa-times color-red2-dark"></i></h1>
+                  <h1 class="text-center mt-3 text-uppercase font-900">Signature missing!</h1>
+                  <p class="boxed-text-l">
+                    Please sign your name and then press accept button.
+                  </p>
+                  <a href="#" class="close-menu btn btn-m btn-center-m button-s shadow-l rounded-s text-uppercase font-900 bg-red1-light">Go Back</a>
+          </div> 
+        
+
+        
+    </div>
+
+
+
+    
+<%- include('sticky_html_end') %>
+<script>
+
+  $(document).ready(()=>{
+    $("#btn-accept").on('click', tosubmit);
+    $("#btn-reset").on('click',clearcanvas);
+  });
+
+  var drawing = false;
+  var mousePos = { x:0, y:0 };
+  var lastPos = mousePos;
+  var startdrawing = false;
+  var canvas = document.getElementById('signature-1');
+  ctx = setupCanvas(canvas);
+
+  var strokes = 0;
+
+function setupCanvas(canvas) {
+// Get the device pixel ratio, falling back to 1.
+var dpr = window.devicePixelRatio || 1;
+// Get the size of the canvas in CSS pixels.
+console.log("dpr:" + dpr);
+var rect = canvas.getBoundingClientRect();
+// Give the canvas pixel dimensions of their CSS
+// size * the device pixel ratio.
+//console.log(rect.width);
+canvas.width = rect.width * dpr;
+canvas.height = rect.height * dpr;
+var ctx = canvas.getContext('2d');
+// Scale all drawing operations by the dpr, so you
+// don't have to worry about the difference.
+ctx.strokeStyle = "#222222";
+ctx.lineWith = 2;
+drawText(ctx);
+return ctx;
+}
+
+function drawText(ctx){
+  ctx.font = "20px Arial";
+  ctx.fillText("USE YOUR FINGER TO SIGN HERE", 10, 50);
+}
+// Now this line will be the same size on the page
+// but will look sharper on high-DPI devices!
+
+function tosubmit(evt){
+  var dataUrl = canvas.toDataURL();
+  console.log(dataUrl);
+  console.log("strokes:" + strokes);
+  if(dataUrl && strokes>10){     
+      var sig2submit = document.getElementById('sig-1');
+      sig2submit.value = dataUrl;  
+      $('#form-1').submit();  
+  }else{
+    console.log("ddddded:" + strokes);
+    //alert("Please sign your name and then press accept.");
+    $("#menu-warning-1").showMenu();
+    evt.preventpreventDefault();
+  } 
+}
+function clearcanvas(){
+
+/**/ 
+  strokes = 0;
+  canvas.width = canvas.width;
+  mousePos={ x:0, y:0 };
+  lastPos = mousePos;
+}
+canvas.addEventListener("mousedown", function (e) {
+if(startdrawing==false){
+    canvas.width = canvas.width;
+    startdrawing=true;
+}
+
+drawing = true;
+lastPos = getMousePos(canvas, e);
+renderCanvas();
+}, false);
+canvas.addEventListener("mouseup", function (e) {
+drawing = false;
+}, false);
+canvas.addEventListener("mousemove", function (e) {
+mousePos = getMousePos(canvas, e);
+}, false);
+/*touchevent http://bencentra.com/code/2014/12/05/html5-canvas-touch-events.html*/
+canvas.addEventListener("touchstart", function (e) {
+      mousePos = getTouchPos(canvas, e);
+var touch = e.touches[0];
+var mouseEvent = new MouseEvent("mousedown", {
+  clientX: touch.clientX,
+  clientY: touch.clientY
+});
+canvas.dispatchEvent(mouseEvent);
+}, false);
+
+canvas.addEventListener("touchend", function (e) {
+var mouseEvent = new MouseEvent("mouseup", {});
+canvas.dispatchEvent(mouseEvent);
+}, false);
+
+canvas.addEventListener("touchmove", function (e) {
+var touch = e.touches[0];
+var mouseEvent = new MouseEvent("mousemove", {
+  clientX: touch.clientX,
+  clientY: touch.clientY
+});
+canvas.dispatchEvent(mouseEvent);
+
+e.preventDefault();
+}, false);
+
+
+// Get the position of a touch relative to the canvas
+function getTouchPos(canvasDom, touchEvent) {
+var rect = canvasDom.getBoundingClientRect();
+return {
+  x: touchEvent.touches[0].clientX - rect.left,
+  y: touchEvent.touches[0].clientY - rect.top
+};
+}
+
+// Get the position of the mouse relative to the canvas
+function getMousePos(canvasDom, mouseEvent) {
+var rect = canvasDom.getBoundingClientRect();
+//alert(rect.left);
+//alert(mouseEvent.clientX);
+return {
+  x: (mouseEvent.clientX - rect.left),
+  y: (mouseEvent.clientY - rect.top)
+};
+}
+window.requestAnimFrame = (function (callback) {
+      return window.requestAnimationFrame || 
+         window.webkitRequestAnimationFrame ||
+         window.mozRequestAnimationFrame ||
+         window.oRequestAnimationFrame ||
+         window.msRequestAnimaitonFrame ||
+         function (callback) {
+      window.setTimeout(callback, 1000/60);
+         };
+})();
+function renderCanvas() {
+if (drawing) {
+ // console.log("( " + lastPos.x +"," + lastPos.y + ")==>"+ "( " + mousePos.x +"," + mousePos.y + ")");
+  ctx.moveTo(lastPos.x, lastPos.y);
+  ctx.lineTo(mousePos.x, mousePos.y);
+  ctx.stroke();
+  lastPos = mousePos;
+  strokes += 1;
+}
+}
+
+// Allow for animation
+(function drawLoop () {
+requestAnimFrame(drawLoop);
+renderCanvas();
+})();
+
+
+
+
+</script>
+
+
+
+</body>
+</html>

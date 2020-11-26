@@ -1,0 +1,139 @@
+<div class="pl-1 pr-1">
+<div class="text-center text-uppercase "> <h1>My Contacts</h1></div>
+            
+<div class="divider mt-3"></div>
+            
+           
+         
+
+<table
+  id="table"
+  data-toggle="table"
+  data-height="460"
+  data-ajax="ajaxRequest"
+  data-search="true"
+  data-side-pagination="server"
+  data-pagination="true"
+  data-id-field="_id"
+  data-response-handler="responseHandler">
+  
+</table>
+
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+<script>
+  // your custom ajax request here query string= search=&sort=&order=&limit=&offset=
+  //response data
+  /*
+  {"total": 11,
+  "totalNotFiltered": 800,
+  "rows": {
+      "id": 118,
+      "name": "Item 118",
+      "price": "$118"
+    },
+}
+  */
+  var $table = $('#table');
+  var $remove = $('#remove');
+  var selections = [];
+
+  function ajaxRequest(params) {
+    var url = '/contact'
+    $.get(url + '?' + $.param(params.data)).then(function (res) {
+        console.log(res);
+      params.success(res)
+    })
+  }
+  function responseHandler(res) {
+    $.each(res.rows, function (i, row) {
+      row.state = $.inArray(row.id, selections) !== -1
+    })
+    return res
+  }
+  window.operateEvents = {
+        
+        'click .delete-a-contact': function (evt, value, row, index) {
+             console.log("delete a contract:" + row._id);
+             $.post("/contact/"+row._id+"?_method=delete",
+                   {name:"124"},
+                   (res)=>{
+                        if(res.result && res.result==='ok'){
+                            showNotification("Delete successed",res.description || "Operation sucess");
+                            $table.bootstrapTable('remove', {
+                            field: 'id',
+                            values: [row._id]
+                            });
+                        }
+                        else{
+                            showNotification("Delete failed",res.description || "System busy");
+                        }
+                        },
+                    "json");
+        }
+    };
+  function initTable(){
+    $table.bootstrapTable('destroy').bootstrapTable({
+      height: 550,
+      columns: [
+        [{
+          field: 'state',
+          checkbox: true,           
+          align: 'center'
+          
+        },
+        {
+          title: 'Name',
+          field: 'firstname',
+          align: 'center',
+          sortable: true
+        }, {
+          field:"companyname",
+          title: 'Company or Organization',
+          align: 'center',
+          sortable:true
+        }, {
+          field:"email",
+          title: 'Email',
+          align: 'center',
+          sortable: true
+        } , {
+            field: 'operate',
+          title: 'Operation',
+          align: 'center',
+          clickToSelect: false,
+          events: window.operateEvents,
+          formatter: operateFormatter
+           
+        } 
+    
+    ]]
+  });}
+
+   function operateFormatter(value, row, index) {
+    return [
+      '<a class="like pr-3" href="javascript:void(0)" title="PRE-REGISTER AN APPOINTMENT">',
+      '<i class="fa fa-calendar-check"></i>',
+      '</a>  ',
+      '<a class="edit-a-contact pr-3" href="javascript:void(0)" title="EDIT">',
+      '<i class="fa fa-edit"></i>',
+      '</a>',
+      '<a class="delete-a-contact" href="javascript:void(0)" title="DELETE">',
+      '<i class="fa fa-trash"></i>',
+      '</a>'
+    ].join('')
+  }
+ /*
+  $(function(){
+    initTable();
+  }); */
+  $(document).ready(()=>{
+    initTable();
+    console.log("i am ready");
+
+    
+  
+  });
+</script>
+</div>
+
+        

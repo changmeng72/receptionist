@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script  src= "/js/jquery-3.5.1.min.js"></script>
+    <title>Document</title>
+    <style>
+        #out-1 {
+            width: 640px;
+            height:480px;
+            background-color: red;
+            margin:auto;
+            position:relative;
+        }
+        body{
+            width:100%;
+            height:100%;
+            text-align: center;
+        }
+    </style>
+    </head>
+    <body >
+
+ <div id="out-1" class="out">
+     <div id="in-1" style="background-color: green;height:100px;width:100px;position:absolute;left:5px;">
+        
+        </div>
+    </div>
+ <div id="out-2" class="out">
+     <span>In the world </span>
+     <p>hello world</p><button>ll</button>
+    </div>
+
+    <form action="/" method="GET" id="form1">
+        <input type="text" name="name">
+        <input type="password" name="password">
+        
+    </form>
+
+ <!--   
+/********************************************************************************
+script zone
+***********************************************************************************/
+-->
+<script> 
+ /*data method https://learn.jquery.com/using-jquery-core/data-methods/ local data store*/
+$('#out-1').data("memo" , {"mm":"I have a dream"});
+
+let str = "<p> " + $('#out-1').data('memo').mm+ " </p>"
+console.log(str);
+//$('#out-1').html(str);
+
+/*utility *************************************************************************/
+/*$.trim,$.each*/
+str ="   I have a dream    "
+console.log($.trim(str));
+
+let strarray = ['i',"HAVE","A","DREAM"];
+$.each(strarray,(idx,val)=>{
+    if(idx===0)
+        str = val;
+    else
+        str = str + " " + val;
+});
+console.log($.trim(str));
+/*$.proxy            */
+var myFunction = function()
+{     //if changed to arrow func, the proxy fails!
+    console.log( this );
+};
+
+var myObject = {
+    foo: "bar"
+};
+ 
+myFunction(); // window
+ 
+var myProxyFunction = $.proxy( myFunction, myObject );
+ 
+myProxyFunction(); 
+
+/*******testing type*************/
+console.log( $.type([]) );
+console.log($.isArray([]));
+console.log($.isNumeric('3.1'));
+console.log($.isFunction(myFunction));
+console.log($.type(/reg/));
+
+/***************jqcollection.each**
+.attr() (getter)
+.css() (getter)
+.data() (getter)
+.height() (getter)
+.html() (getter)
+.innerHeight()
+.innerWidth()
+.offset() (getter)
+.outerHeight()
+.outerWidth()
+.position()
+.prop() (getter)
+.scrollLeft() (getter)
+.scrollTop() (getter)
+.val() (getter)
+.width() (getter)
+*/
+console.log("jqcollection.each");
+$('div').each((index,divItem)=>{    /*divItem is a HTMLElement*/
+    //divItem.html(divItem.attr('id'));
+   // divItem.innerHTML="My id is: " + divItem.getAttribute('id');
+    /*but you can use$ to change it(dom object) to a jquery object*/
+   // $(divItem).html($(divItem).width());
+});
+
+
+/*.map and $.map*/
+$( "div" ).map( function( index, element ) {
+    return element.id;
+}).get();
+ 
+// Also returns 
+// Note that the value comes first with $.map
+var arr = [{
+    id: "a",
+    tagName: "li"
+}, {
+    id: "b",
+    tagName: "li"
+}, {
+    id: "c",
+    tagName: "li"
+}];
+
+console.log($.map( arr, function( value, index ) {
+    return value.id;
+}));
+/*.index== first element index in its parent scope
+-1 represent not found*/
+
+console.log("div.index:" + $('div').index());
+console.log("p.index:" + $('p').index());
+var listItem = $( "div" );
+console.log( "Index: " + listItem.index( ".out" ) ); // 0 ;listItem.first().index(selector2) 首先查到第一个元素，再根据selector2 在dom内搜寻set1， 返回first在set中的位置。
+listItem = $('.out');
+console.log( "Index: " + listItem.index($('#out-2'))); /*this is similar with 2nd*/
+
+
+/*****ajax*********/
+
+$.ajax({
+    url:"/visitor/checkstatus",
+    type:"POST",
+    async:false,
+    dataType:"json",
+    timeout:2000,
+    data:{
+        email:"z.com"
+    }
+}).done((data)=>{
+
+    console.log(data);
+    $("#in-1").load('/ #b1');
+
+}).fail((xhr,status,err)=>{
+    console.log("d" + status);
+
+}).always((xhr,status)=>{
+    console.log(status);
+
+});
+/*serialization*/
+
+
+$("#out-2").delegate('button','click',(evt)=>{
+    console.log("ok");
+});
+</script>
+
+</body>
+ 
+</html>
+
+<!--
+    async
+Set to false if the request should be sent synchronously. Defaults to true. Note that if you set this option to false, your request will block execution of other code until the response is received.
+
+linkcache
+
+Whether to use a cached response if available. Defaults to true for all dataTypes except "script" and "jsonp". When set to false, the URL will simply have a cachebusting parameter appended to it.
+
+linkdone
+A callback function to run if the request succeeds. The function receives the response data (converted to a JavaScript object if the dataType was JSON), as well as the text status of the request and the raw request object.
+
+linkfail
+A callback function to run if the request results in an error. The function receives the raw request object and the text status of the request.
+
+linkalways
+A callback function to run when the request is complete, regardless of success or failure. The function receives the raw request object and the text status of the request.
+
+linkcontext
+The scope in which the callback function(s) should run (i.e. what this will mean inside the callback function(s)). By default, this inside the callback function(s) refers to the object originally passed to $.ajax().
+
+linkdata
+The data to be sent to the server. This can either be an object or a query string, such as foo=bar&amp;baz=bim.
+
+linkdataType
+The type of data you expect back from the server. By default, jQuery will look at the MIME type of the response if no dataType is specified.
+
+linkjsonp
+The callback name to send in a query string when making a JSONP request. Defaults to "callback".
+
+linktimeout
+The time in milliseconds to wait before considering the request a failure.
+
+linktraditional
+Set to true to use the param serialization style in use prior to jQuery 1.4. For details, see http://api.jquery.com/jQuery.param/.
+
+linktype
+The type of the request, "POST" or "GET". Defaults to "GET". Other request types, such as "PUT" and "DELETE" can be used, but they may not be supported by all browsers.
+
+linkurl
+The URL for the request.
+
+The url option is the only required property of the $.ajax() configuration object; all other properties are optional. This can also be passed as the first argument to $.ajax(), and the options object as the second argument.
+-->

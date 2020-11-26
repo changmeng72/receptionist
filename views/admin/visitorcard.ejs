@@ -1,0 +1,31 @@
+<div class="visitor-card">
+    <table style="padding:5px; border:none "class="table-sm" >
+        <tr>
+            <td rowspan="4"style="width:60px;"> 
+                <div class="visitor-portrait" >
+                    <img src="/image/icon-man.svg" style="height:50px;width:50px;"> </img> </div>
+            </td>
+            <td>                
+                <%= visitor.firstname + " " + visitor.lastname%>
+            </td>
+        </tr> 
+        <tr>
+            <td><%= visitor.email%></td>  
+       </tr> 
+       <tr>
+            <td>
+                <div>
+                    <a href="#" class="btn btn-xs btn-primary">button1</a>
+                    <a href="#" class="btn btn-xs btn-primary">button2</a>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+               <div>
+                <a href="#" class="btn btn-xs btn-primary">button3</a>
+                </div>
+            </td>
+        </tr>        
+  </table>
+</div>

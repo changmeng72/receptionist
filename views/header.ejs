@@ -1,0 +1,21 @@
+<header class="header-1" >
+    
+    
+    <div style="text-align: center; margin:auto;">
+    <img src="/image/logo.png"  > <span>ABC Company</span>
+    </div>
+</header>
+<% if(control.back) {%>
+    <div class="shortcut" onclick="previouspage()"><img src="/image/leftarrow.png"></div>
+    <% } else if(control.cancel) { %>
+    <div class="shortcut" onclick="homepage()"><img src="/image/cancel.png"></div>
+    <%}else {%>
+     
+     <% } %>
+
+ <script>
+     function previouspage() {
+        history.back();
+     } 
+    </script>
+   

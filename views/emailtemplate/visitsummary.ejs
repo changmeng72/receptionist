@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visit Summary</title>
+</head>
+ 
+    <body style="background-color: #ffffff">
+
+        <div style = "margin:auto">
+    
+        <table >
+            <thead>
+                <tr> <td colspan="2"> <h1 style="text-align: center;">Your visit summary</h1></td></tr>                 
+            </thead>
+            <tbody>
+                <tr><td> Name</td><td><h4><%=data.visitorname %></h4></td></tr>            
+                <tr><td> Invitor</td><td><%=data.invitor %></td></tr>
+                <tr><td> Check in</td><td><%=data.checkin %></td></tr>
+                <tr><td> Check out</td><td><%=data.checkout %></td></tr>
+                <tr><td> Location</td><td><%=data.location %></td></tr>
+                <tr><td> Description</td><td><%=data.description %></td></tr>
+                
+            </tbody>
+        </table>
+    </div>
+        
+</body>
+</html>

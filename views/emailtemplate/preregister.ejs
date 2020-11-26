@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitation</title>
+</head>
+ 
+     
+<body style="background-color: #ffffff">
+
+    <div style = "margin:auto">
+
+    <table >
+        <thead>
+            <tr> <td colspan="2"> <h1 style="text-align: center;">You have an invitation</h1></td></tr>
+            <tr><td colspan="2" style="text-align: center;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=<%=data.qrcode %>" style="margin:auto" width="200">
+                <p><em>You can scan this qr code when check in</em></p> </td></tr>
+        </thead>
+        <tbody>
+            <tr><td> Name</td><td><h4><%=data.visitorname %></h4></td></tr>            
+            <tr><td> Invitor</td><td><%=data.invitor %></td></tr>
+            <tr><td> Date and Time</td><td><%=data.datetime %></td></tr>
+            <tr><td> Duration</td><td><%=data.duration %></td></tr>
+            <tr><td> Location</td><td><%=data.location %></td></tr>
+            <tr><td> Description</td><td><%=data.description %></td></tr>
+            
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

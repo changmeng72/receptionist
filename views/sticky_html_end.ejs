@@ -1,0 +1,89 @@
+
+
+<!--- general notification
+  menu-id: data-menu-notifiction
+  title:data-app-confirm-title
+  prompt:data-app-confirm-prompt
+
+
+-->
+    <div id= "data-menu-notifiction" class="menu menu-box-modal rounded-m" data-menu-height="200" 
+            data-menu-width="330" style="height:200px; width:330px;display:block;">
+            <h1 class="text-center mt-3 pb-1 " id="data-app-confirm-title">Notification</h1>
+            <p class="boxed-text-1 text-center " id = "data-app-confirm-prompt">
+            Do you want to visit abc?
+            </p>
+            <div class="row mr-3 ml-3 mb-0">
+                 <a id="menu-confirm-ok" href="#" class="close-menu btn btn-sm btn-full button-s shadow-1 rounded-s text-uppercase font-900 bg-green1-dark">OK</a>
+            </div>
+    </div>
+
+
+
+</div>
+
+<script type="text/javascript" src="/scripts/jquery.js"></script>
+<script type="text/javascript" src="/scripts/bootstrap.min.js"></script>
+<script type="text/javascript" src="/scripts/custom.js"></script>
+<script src="https://kit.fontawesome.com/48cd67222b.js" crossorigin="anonymous"></script>
+<script>
+
+     
+
+    $(document).ready(()=>{    
+        
+        console.log("ready");
+
+        try{
+
+         $('#btnmenu-app').on('click','#btn-app',function(){
+            console.log("test");
+            evt.preventDefault(); 
+            if($(this).attr('button-type'))
+                window.location.href="/visitor?buttontype="+$(this).attr(button-type);
+            else
+                window.location.href = "visitor/qr";
+            
+            });
+        }
+        catch(err){
+            console.error(err);
+        }
+        /*navigator */
+        $(function(){
+       
+       $(".vertical-nav a").on("click",(evt)=>{
+        console.log("running:" + $(evt.currentTarget).attr("data-href").search("contact"));
+           if($(evt.currentTarget).attr("data-href").search("contact")>-1){
+               console.log("ajax");
+              $.ajax({
+                   url:$(evt.currentTarget).attr("data-href"),
+                   type:'GET',
+                   error: (err)=>{
+                       console.log(err);
+                   },
+                   success:(data)=>{
+                       console.log("data");
+                       $("#dashboard").html(data);
+                   }
+                });
+               
+
+           }
+           else
+              window.location.href = $(evt.currentTarget).attr("data-href");
+       });
+
+        });
+
+}); 
+    
+function showNotification(title,prompt){
+
+    $("#data-app-confirm-title").html(title);
+    $("#data-app-confirm-prompt").html(prompt);
+    $("#data-menu-notifiction").showMenu();
+
+}
+ 
+</script>

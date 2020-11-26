@@ -1,0 +1,195 @@
+ <%- include('sticky_html_start') %>
+ 
+<div id="page">
+
+    <div class="header header-fixed header-logo-center " style="background-color:#f0f0f0;">
+        <a href="/" class="header-title">
+            <img src="/image/logo.png" class="max-auto mr-1 scale-box" height="30"></img>ABC company
+        </a>
+        <a href="/" data-back-button class="header-icon header-icon-1"><i class="fas fa-arrow-left fa-3x" ></i>
+            <!--img src="/image/cancel.png" height="50"/> </a-->     
+        </a>   
+    </div>
+
+    <!-- footer is removed-->
+
+    <div class="page-content header-clear-medium " style="padding-top:50px;width:80%; margin:auto;position:relative">
+        <div class="content" >
+            <div class="text-center font-35 font-weight-900 color-blue2 caption-app " ><p> Please input your email address</p></div>            
+            <div class="text-center font-35 font-weight-900 color-blue2 caption-app " hidden><p> Please input your name</p></div>            
+            <div class="text-center font-35 font-weight-900 color-blue2 caption-app " hidden><p> Please input your company name</p></div>
+            <div class="text-center font-35 font-weight-900 color-blue2 caption-app " hidden><p> Please input question 1</p></div>
+            <div class="text-center font-35 font-weight-900 color-blue2 caption-app " hidden><p> Please input question 2</p></div>
+             
+            <div class="divider diverder-margins bg-blue2-dark mt-3 mb-5"></div>
+            <div  style="margin-top:30px;"></div>
+            <div class="clearfix">
+                <a id="btn-scan-qr" href="#" class="btn btn-sm  button-s shadow-1 rounded-s text-uppercase font-900 bg-info float-right">
+                    <i class="fa fa-qrcode " aria-hidden="true"></i>  Scan QR
+                </a>
+            </div>
+           <div class="my-content " >
+                
+
+                    <form   class="info-collect-input" method="post" action="/visitor/info" id="form-1">
+
+                        <div class="input-style input-style-1 input-required" >
+                            <span>Email</span>                             
+                            <input type="email" placeholder="Your email address" name="email" id="visitor-email">
+                        </div> 
+                        
+                        <div class="input-style has-icon input-style-1 input-required " hidden >
+                            <i class="input-icon fa fa-user"></i>
+                            <span>Name</span>
+                            <em>(required)</em>
+                            <input type="name" placeholder="Name" name="visitorname" id="visitor-name">
+                        </div> 
+        
+                        
+                        
+                        <div class="input-style input-style-1 input-required" hidden>
+                            <span>Company</span>
+                             
+                            <input type="text" placeholder="Company Name" name="companyname" >
+                        </div> 
+
+                        <div class="input-style input-style-1 input-required" hidden>
+                            <span>Question-1</span>                             
+                            <input type="text" placeholder="Question-1" name="q1">
+                        </div> 
+                        <div class="input-style input-style-1 input-required" hidden>
+                            <span>Question-2</span>                             
+                            <input type="text" placeholder="Question-2" name= 'q2'>
+                        </div> 
+
+                            <!--input class="no-outline" type="text" placeholder="" id="inputfield" onkeydown='processInput'></input>
+                             <input type="hidden" name="clientInfo" value="" id="clientInfo"/ -->
+                    <a id="btn-back" href="#" class=" btn btn-sm button-s shadow-1 rounded-s text-uppercase font-900 bg-green1-dark float-left" hidden>
+                        Back
+                    </a>
+                 
+                    <a id="btn-skip" href="#" class="btn btn-sm  button-s shadow-1 rounded-s text-uppercase font-900 bg-green1-dark float-right">
+                        Next
+                    </a>
+                </form>
+            </div>  
+            <div class="owl-dots mt-5" style="clear: both;">
+                <div class="owl-dot active"><span></span></div>
+                <div class="owl-dot"><span></span></div>
+                <div class="owl-dot"><span></span></div>
+                <div class="owl-dot "><span></span></div>
+                <div class="owl-dot"><span></span></div>
+            </div>
+
+            
+            
+        </div>
+    </div>
+    <div id= "menu-confirm" class="menu menu-box-modal rounded-m" data-menu-height="200" 
+        data-menu-width="330" style="height:200px; width:330px;display:block;">
+        <h1 class="text-center mt-3 pb-1">Please Check the input data</h1>
+        <p class="boxed-text-1 text-center font-weight-900" id="alert-infomation">
+         
+        </p>
+        <div class="row mr-3 ml-3 mb-0">
+            <div class="col-12">
+                <a id="menu-confirm-ok" href="#" class="close-menu btn btn-sm btn-full button-s shadow-1 rounded-s text-uppercase font-900 bg-red2-dark">Yes</a>
+            </div>
+             
+        </div>
+    </div>
+
+
+ <%- include('sticky_html_end') %>
+ 
+ <script>  
+ function showAlert(msg){
+      $("#alert-infomation").html(msg);
+      $("#menu-confirm").showMenu();
+
+ }
+ function ValidateEmail(mail) 
+{
+ if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
+  {
+    return (true)
+  }
+    
+    return (false)
+}
+
+ function skip(direction){
+    let n =  $('.caption-app').length;
+    console.log(n);
+           for(let i=0;i<n;i++){
+               if(!$($('.caption-app')[i]).attr("hidden")){
+                    if(i===0){
+
+                       let email = $("#visitor-email").val().trim();
+                       console.log(email);
+                       if(email!=="" && !ValidateEmail(email)){
+                           showAlert("Email address is not valid,please modify it!");
+                           return;
+                       }
+
+                   }
+                   else if(i===1){
+                       let name = $("#visitor-name").val().trim();
+                       if(name==="" || name.length <2){
+                           showAlert("Name can not be empty or too short!");
+                           return;
+                       }
+                   }
+                    if(i===n-1 && direction===1){           
+
+                        $("#form-1").submit();
+                        return;
+                    }
+                    $($('.caption-app')[i]).attr("hidden","");
+                    $($(".input-style")[i]).attr("hidden","");
+                    $($(".owl-dot")[i]).removeClass("active");                   
+                    if((i>0 && direction<0) || (direction>0 && i+direction<n)){
+                            $($('.caption-app')[i+direction]).removeAttr("hidden");
+                            $($(".input-style")[i+direction]).removeAttr("hidden");
+                            $( $(".owl-dot")[i+direction]).addClass("active");
+                            $($("input")[i+direction]).focus();
+                            if(i===0)  /*show back*/{
+                                $( $("#btn-back")).removeAttr('hidden');                                 
+                            }else if(i===1 && direction<0){
+                                $( $("#btn-back")).attr('hidden',"");
+                                
+                            } 
+                            return;
+                        }
+                }
+                 
+           }
+                
+  }
+
+
+  $(document).ready(()=>{
+      $('input[name="visitorname"]').focus();
+      $("#form-1").delegate('input','keyup',(evt)=>{
+          console.log("keyup:" + evt.keyCode);
+        if(evt.keyCode==13 ||evt.keyCode==34 ){ //'enter' or 'next'
+            skip(1);            
+            }
+        });
+      
+                     
+
+     
+
+      $("#btn-skip").on('click',()=>{ skip(1);});
+      $("#btn-back").on('click',()=>{skip(-1);});
+      $("#btn-scan-qr").on('click',()=>{ 
+          console.log("scan");
+           window.location.href = "/visitor/scanvisitorinfo";
+      });
+           
+  });   
+
+</script>
+</body>
+</html>

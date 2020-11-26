@@ -1,0 +1,133 @@
+<%- include('./../sticky_html_start') %>
+<div id="page">
+    <div class="header header-fixed header-logo-center" style="height:70px;z-index: 100000;" >
+        <a href="#" class="header-title " style="font-size : 1rem;overflow:hidden;"><img src="/image/logo.png" class="max-auto mr-1 scale-box" height="60"> ABC company</a>
+        
+        <a  href="#" class="header-icon header-icon-1 mt-2  ml-2" id="sidebarCollapse" >
+            <i class="fas fa-bars fa-3x "></i>
+        </a>   
+             
+    </div>
+
+    <!-- footer is removed-->
+    
+    <div class="page-content header-clear-medium " style="padding-top:80px;" id="content">
+        
+       
+    
+    
+        <div id="dashboard" style="margin:auto; position:relative">
+  
+
+            <div class="card border-primary " style="min-width: 300px;height:50rem">
+                <div class="card-body ml-3 mr-3 mt-5">
+                    <div class="card-title text-center"><h2>Create a new appointment</h2></div>
+                    <div>
+                        <button type="button" class="btn btn-info btn-xxs text-uppercase" style="padding:1px 1px;">Selet a contact from MyContacts</button>
+                    </div>
+                    <div>
+                        <form action="/admin/appointment" method="post" id="register-form">
+                            
+                            <div class="input-style has-icon input-style-2 input-required">
+                                <i class="input-icon fa fa-book"></i>
+                                <span>Subject</span>
+                                <input type="name" placeholder="Subject" name="subject">
+                            </div> 
+
+                            <div class="input-style has-icon input-style-2 input-required">
+                                        <i class="input-icon fa fa-user"></i>
+                                        <span>Name</span>
+                                        <em>(required)</em>
+                                        <input type="name" placeholder="Name" name="contactname">
+                            </div> 
+
+                            <div class="input-style has-icon input-style-2 input-required">
+                                <i class="input-icon fa fa-at color-theme"></i>
+                                <span>Email</span>   
+                                <em>(required)</em>                    
+                                <input type="email" placeholder="Email" name="email">
+                            </div>
+
+                            <div class="input-style has-icon input-style-2 input-required">
+                                <i class="input-icon fa fa-building"></i>
+                                <span>Company Name</span>                                                
+                                <input type="name" placeholder="Company Name" name="companyname">
+                            </div> 
+                            
+                            <div class="input-style has-icon input-style-2 input-required">
+                                <i class="input-icon fa fa-clock-o"></i>
+                                <span>Appointment Time</span>   
+                                     
+                                <input type="datetime-local" placeholder="Appointment Time" name="preregistertime" required="required">
+                            </div> 
+                            
+
+                            <div class="input-style input-style-2 input-required">
+                                <span>Duration</span>
+                                <em><i class="fa fa-angle-down"></i></em>
+                                <select class="form-control" name="duration">
+                                    <option value="0" disabled selected>Select meeting duration</option>
+                                    <option value="30">30 mins</option>
+                                    <option value="60">1 hour</option>
+                                    <option value="120">2 hours</option>
+                                    <option value="180">3 hours</option> 
+                                </select>
+                            </div>
+                            
+                            <div class="input-style has-icon input-style-2 input-required">
+                                <i class="input-icon fa fa-building"></i>
+                                <span>Location</span>                    
+                                <input type="text" placeholder="Location" name="location">
+                            </div> 
+
+                            <div class="input-style input-style-2 input-required">
+                                <span>Description of the appointment</span>
+                                <textarea  class="form-control" placeholder="" name="description"></textarea>
+                            </div>
+
+                            
+                           
+                            
+                            <div class="fac fac-checkbox fac-green"><span></span>
+                                <input id="box3-fac-checkbox" type="checkbox" value="0" checked name="sendinvite">
+                                <label for="box3-fac-checkbox">Send an invite to the contact</label>
+                            </div>
+
+                            <input   type="text" value=""  id="contactid" name="contactid" hidden/>
+
+                            <div class="divider diverder-margins bg-blue2-dark mb-2"></div>
+        
+                            <button type="submit" class="btn btn-primary text-uppercase ">Create</button>
+                            <button type="reset" class="btn btn-secondary text-uppercase">Reset</button>
+                            
+                             
+                        </form>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+
+
+
+ 
+  <%- include('navigator',{data:{name:data.name ,photo:data.photo}})%>
+  
+<%- include('./../sticky_html_end') %>
+
+
+    <script>
+   /*
+   $(function(){
+       console.log("running");
+       $(".vertical-nav a").on("click",(evt)=>{
+         window.location.href = $(evt.currentTarget).attr("data-href");
+       });
+
+  });
+
+*/
+</script>
+</body>
+</html>

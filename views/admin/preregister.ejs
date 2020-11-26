@@ -1,0 +1,78 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css2/reception.css">
+    <title>On site Promise Agreement</title>  
+    <style>
+        
+
+        table{
+            margin:auto;
+            font-size:x-large;
+        }
+
+        input{
+            font-size:x-large;
+        }
+
+        button{
+            font-size:x-large;
+            border-radius: 5px;
+        }
+
+        
+    </style>
+</head>
+<body class="body-1">
+     <%- include('header') %>
+     
+     <%- include('navigator') %>
+
+
+     <div class="main1" id="main1" >
+     <div style="text-align: center; margin-top:50px; margin-bottom:100px;"><h2>Preregister visitor</h2></div>
+     <div>
+     <form action="/admin/preregister" method="post" id="register-form">
+      <table cellpadding="10">
+      <tbody>
+        
+      <tr>
+          <td> <lable>First Name:</lable></td>
+          <td><input type="text" value=""   name="firstname" required="required"/></td> 
+     </tr>
+      <tr> 
+          <td><lable>Last Name:</lable></td>
+          <td> <input type="text" value=""   name="lastname" /></td>
+      </tr>
+      <tr>
+        <td><lable>Company Name:</lable> </td> 
+        <td><input type="text" value=""   name="companyname"/> </td>
+     </tr>
+      <tr>
+          <td><lable>Email:</lable> </td> 
+          <td><input type="email" value=""   name="email"/> </td>
+     </tr>
+      
+      <tr> 
+          <td><lable>Visiting Time:</lable> </td> 
+          <td><input type="datetime-local" value=""   name="preregistertime" required="required"/> <br/></td>
+     </tr>
+      <tr>
+          <td><button type="submit" >Submit</button></td>
+          <td><button type="reset">Reset</button></td>
+    </tr>
+    </tbody>
+      </table>
+       
+     </form>
+      </div>
+     </div>
+     <%- include('footer') %>
+
+     
+     
+
+
+</body>
+
+</html>

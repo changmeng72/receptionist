@@ -1,0 +1,101 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css2/reception.css">
+    <title>Receptionist</title>  
+    <style>
+       #log-header{
+            height:50px;
+            text-align: center;
+            font-size: x-large;
+       }
+       #data-zone table{
+        width: 100%;
+       }
+       tr:nth-child(even) {
+               background-color: #dddddd;
+}
+    </style>
+</head>
+<body class="body-1">
+     <%- include('header') %>
+     
+     <%- include('navigator') %>
+
+     <div  id="log-header" class = "main-log1"  > 
+             <p style="margin:0px; padding-top:5px;">Visitor Log</p>
+         </div>
+     <div class="main1" id="main1" style="height:calc(100% - 150px);"" >
+         
+        <div id="datasheet-zone">
+           <div id="datasearch-zone">
+                <div id="condition-zone" >
+                    <table>
+                        <tr>
+                            <td><lable>Condition1</lable></td>
+                            <td><lable>Condition2</lable></td>
+                            <td><lable>Condition3</lable></td>
+                            <td><lable>Condition4</lable></td>
+                            <td><lable></lable></td>
+                            </tr>
+                        <tr>
+                            <td><input type="text" id="condition1"/></td>
+                            <td><input type="text" id="condition2"/></td>
+                            <td><input type="text" id="condition3"/></td>
+                            <td><input type="text" id="condition4"/></td>
+                            <td><button>Search</button></td>
+                            
+                        </tr>
+                    </table>
+                </div>       
+                
+           </div>  
+
+           <div id="logopr-zone" style="float:right;margin-bottom:30px;">
+              <button>button1</button><button>button2</button>
+           </div>
+            
+           
+           <div id="data-zone" style="clear:both;  padding-top:20px;">
+               <table>
+                   <thead>
+                       <tr>
+                           <th>Visitor</th>
+                           <th>Contact</th>
+                           <th>Button</th>
+                           <th>Check In</th>
+                           <th>Check Out</th>
+                           <th>Action</th>
+                       </tr>
+                    <tr> <th colspan="6" ><hr></th></tr>
+                   </thead>
+                   <tbody>
+                       <% for(const visitor of visitors){ %>
+                        <tr>
+
+                            <td class="visitor-info"> <%- include('visitorcard2',{visitor:visitor}) %></td>
+                            <td>  <%= visitor.contactname %></td>
+                            <td> <%= visitor.buttontype %></td>
+                            <td> <%= visitor.checkin %></td>
+                            <td> <%= visitor.checkout %></td>    
+                            <td> <div class="chatbutton"></div> <div class="trashbutton" ></div></td>  
+                            
+                        </tr>
+                        <% } %>
+                   </tbody>
+
+               </table>
+           </div>
+
+         </div>
+     
+     </div>
+     <%- include('footer') %>
+
+     
+     
+
+
+</body>
+
+</html>

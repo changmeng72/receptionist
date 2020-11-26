@@ -1,0 +1,97 @@
+<%- include('sticky_html_start') %>
+<div id="page">
+
+    <div class="header header-fixed header-logo-center " style="background-color:#f0f0f0;">
+        <a href="/" class="header-title">
+            <img src="/image/logo.png" class="max-auto mr-1 scale-box" height="30"></img>ABC company
+        </a>
+        <a href="/" data-back-button class="header-icon header-icon-1"><i class="fas fa-arrow-left fa-1x" ></i>
+            <!--img src="/image/cancel.png" height="50"/> </a-->     
+        </a>   
+    </div>
+
+    <!-- footer is removed-->
+
+    <div class="page-content header-clear-medium " style="padding-top:50px;width:80%; margin:auto;position:relative">
+        <div class="content" >
+            <div style="height:30px;"></div>
+            <div class="text-center font-35 font-weight-900 color-blue2 caption-app "><p>Please wait, we are sending message to your contact...</p></div>
+            <div class="divider diverder-margins bg-blue2-dark mt-3"></div>
+            <div class="my-content"  >
+                <div class="video-zone" style="min-height: 100px; text-align: center; position: relative;margin:auto; ">
+                    <div id="data-waiting-notification"   class="card card-style" style="display:block">
+                            <div class="card-body text-center" >
+                            <div class="class-text"><p><%= alerttext %></p></div>
+                        </div>
+                    </div> 
+
+            </div>
+        </div>
+    </div>
+     <!---menu zone-->   
+     
+    
+
+    
+    <%- include('sticky_html_end') %>
+
+    <SCRIPT>
+
+        var maxwaitTime= 6;
+        /*
+        function task(){
+            setInterval(function(){getJSON('/visitor/checkstatus', (err, data) => {
+
+                        console.log(Date.now());
+                        if (err != null) {
+                                console.error(err);                        
+                        } else {
+                           //const result =  JSON.parse(data).result;
+                            maxwaitTime --;
+                            if(maxwaitTime==0){
+                               alert("Sorry, wait too long ,please contact an assistant for help...");
+                               window.location.href="/";
+                            }
+                            else{
+                               if(data.result==="OK"){
+                                  alert("Your contact is notified,please wait for greeting...");
+                                   window.location.href="/";
+                                }
+                                
+                            }
+
+
+                        }})},5000);
+           
+        }
+        function getJSON(url, callback){
+
+            let xhr = new XMLHttpRequest();
+
+            xhr.open('GET', url, true);
+            xhr.responseType = 'json';
+
+            xhr.onload = () => {
+
+            let status = xhr.status;
+
+            if (status == 200) {
+                 callback(null, xhr.response);
+             } else {
+                    callback(status);
+            }
+        };
+
+        xhr.send();
+        }
+       */
+         
+        
+        $(document).ready(()=>{
+             setTimeout(()=>{window.location.href="/";},5000);
+        });
+ 
+ 
+    </SCRIPT>
+</body>
+</html>

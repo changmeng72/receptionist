@@ -1,0 +1,31 @@
+{
+  "name": "receptionist",
+  "version": "1.0.0",
+  "description": "A receptionist project",
+  "main": "index.js",
+  "scripts": {
+    "devStart": "nodemon index.js"
+  },
+  "author": "Meng Chang",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "bootstrap-daterangepicker": "^3.1.0",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "formidable": "^1.2.2",
+    "html-docx-js": "^0.3.1",
+    "ical-generator": "^1.15.2",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.10.13",
+    "nodemailer": "^6.4.14",
+    "nodemailer-smtp-transport": "^2.7.4",
+    "qrcode": "^1.4.4",
+    "sendmail": "^1.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}

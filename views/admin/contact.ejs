@@ -1,0 +1,54 @@
+<%- include('./../sticky_html_start') %>
+<div id="page">
+    <div class="header header-fixed header-logo-center" style="height:70px;z-index: 100000;" >
+        <a href="#" class="header-title " style="font-size : 1rem;overflow:hidden;"><img src="/image/logo.png" class="max-auto mr-1 scale-box" height="60"> ABC company</a>
+        
+        <a  href="#" class="header-icon header-icon-1 mt-2  ml-2" id="sidebarCollapse" >
+            <i class="fas fa-bars fa-3x "></i>
+        </a>   
+             
+    </div>
+
+    <!-- footer is removed-->
+    
+    <div class="page-content header-clear-medium " style="padding-top:80px;" id="content">
+        
+       
+    
+    
+        <div id="dashboard" style="margin:auto; ">
+          
+        </div>
+         
+       
+    </div>
+
+  
+    <%- include('navigator',{user:{name:"Jack Ma" ,photo:"/"}})%>
+    
+<%- include('./../sticky_html_end') %>
+
+<style>
+    header-login-text{
+          
+          color: black;
+    }
+    
+</style>
+<script>
+   
+   $(function(){
+       console.log("running");
+       $(".vertical-nav a").on("click",(evt)=>{
+         window.location.href = $(evt.currentTarget).attr("data-href");
+       });
+
+  });
+
+  
+</script>
+</body>
+</html>
+
+           
+

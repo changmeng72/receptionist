@@ -1,0 +1,285 @@
+<%- include('sticky_html_start') %>
+ 
+<div id="page">
+
+    <div class="header header-fixed header-logo-center " style="background-color:#f0f0f0;">
+        <a href="/" class="header-title">
+            <img src="/image/logo.png" class="max-auto mr-1 scale-box" height="30"></img>ABC company
+        </a>
+        <a href="/" data-back-button class="header-icon header-icon-1"><i class="fas fa-arrow-left fa-3x" ></i>
+            <!--img src="/image/cancel.png" height="50"/> </a-->     
+        </a>   
+    </div>
+
+    <!-- footer is removed-->
+
+    <div class="page-content header-clear-medium " style="padding-top:50px;width:80%; margin:auto;position:relative">
+        <div class="content" >
+            <div style="height:30px;"></div>
+            <div class="text-center font-35 font-weight-900 color-blue2 caption-app " ><p id="pagetitle"> <%= targeturl %> - Please show your QR code received</p></div>
+            <div class="divider diverder-margins bg-blue2-dark mt-3"></div>
+            <div class="my-content" >
+                <div class="video-zone" style="width: 640px; min-height: 100px; text-align: center; position: relative;margin:auto; ">
+                    <div id="notification"   class="card card-style" style="display:block">
+                        <img class="card-image-top" src = "/image/waiting.gif"/>
+                        <div class="card-body text-center" >
+                            <div class="class-text"><p>Camera is starting up, please wait a moment...</p></div>
+                        </div>
+                    </div>
+                    <video id="video" autoplay    style="width:640px;min-width:120px; visibility:false;"> </video> 
+                    <div id="video-overlay-shader" hidden> 
+                        <div class="qr-shaded-region" id="qr-shaded-region_1" style="position: absolute; height: 480px; background: rgba(0, 0, 0, 0.48); top: 0px; left: 0px; width: 195px;">
+                            <div class="hb-1" style="position: absolute; background-color: rgb(255, 255, 255); width: 5px; height: 45px; top: 110px; left: 190px;"></div>
+                            <div class="hb-1" style="position: absolute; background-color: rgb(255, 255, 255); width: 5px; height: 45px; top: 325px; left: 190px;"></div>
+                        </div>
+                        <div class="qr-shaded-region" id="qr-shaded-region_2" style="position: absolute; height: 480px; background: rgba(0, 0, 0, 0.48); top: 0px; right: 0px; width: 195px;">
+                            <div class="hb-1" style="position: absolute; background-color: rgb(255, 255, 255); width: 5px; height: 45px; top: 110px; left: 0px;"></div>
+                            <div class="hb-1" style="position: absolute; background-color: rgb(255, 255, 255); width: 5px; height: 45px; top: 325px; left: 0px;"></div>
+                        </div>
+                        <div class="qr-shaded-region" id="qr-shaded-region_3" style="position: absolute; height: 115px; background: rgba(0, 0, 0, 0.48); top: 0px; left: 195px; width: 250px;">
+                            <div class="hb-1" style="position: absolute; background-color: rgb(255, 255, 255); width: 45px; height: 5px; top: 110px; left: -5px;"></div>
+                            <div class="hb-1" style="position: absolute; background-color: rgb(255, 255, 255); width: 45px; height: 5px; top: 110px; left: 210px;"></div>
+                        </div>
+                        <div class="qr-shaded-region" id="qr-shaded-region_4" style="position: absolute; height: 115px; background: rgba(0, 0, 0, 0.48); top: 365px; left: 195px; width: 250px;">
+                            <div class="hb-1" style="position: absolute; background-color: rgb(255, 255, 255); width: 45px; height: 5px; top: 0px; left: -5px;"></div>
+                            <div class="hb-1" style="position: absolute; background-color: rgb(255, 255, 255); width: 45px; height: 5px; top: 0px; left: 210px;"></div>
+                        </div>
+                    </div>
+                    <div>   
+                        <canvas style="display:none;" id='qr-canvas'></canvas>   
+                    </div> 
+               </div>
+          </div>
+        </div>
+    </div>
+    <div id= "menu-confirm" class="menu menu-box-modal rounded-m" 
+        style=" display:block;">
+        <h1 class="text-center mt-3 pb-1" id="confirm-menu-title"></h1>
+        
+        <div class="boxed-text-1  font-weight-900 ml-2 mr-2 font-20" id="alert-infomation">
+         
+        </div>
+        <div class="row mr-3 ml-3 mb-3 mt-3">
+            <div class="col-12">
+                <a id="menu-confirm-ok" href="#" class="close-menu btn btn-sm btn-full button-s shadow-1 rounded-s text-uppercase font-900 bg-info mt-3">Yes</a>
+            </div>
+             
+        </div>
+    </div>
+    
+     
+
+    <%- include('sticky_html_end') %>
+    
+
+
+   <script src="/js/qr_packed.js"></script>
+   <script>
+    var scanning=false;
+    var qrscanner,qrcanvas;
+    var hbp = 0;
+    var inittime = 0;
+    var url = null;
+     
+    function qr_init(){
+        if(window.qrcode) {
+
+                qrscanner = window.qrcode;
+                console.log("qr init: " + qrscanner);
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).
+                then(handleSuccess).catch(handleError); 
+                console.log("after get media");
+                
+                
+                qrcanvas = document.getElementById('qr-canvas');
+                   /*qr result handle:*/
+                qrscanner.callback = (res) => {
+                if (res) {
+                
+                        console.log("res: " + res);
+                        scanning = false;
+
+                        video.srcObject.getTracks().forEach(track => {
+                            track.stop();
+                            
+                            video.style.display="none";
+                            notification.style.display="block";
+                            
+                            notification.innerHTML="Your QR code is scanned successfully, now please wait a moment"  ; 
+                            $("#video-overlay-shader").attr("hidden",true);    
+                            let targeturl = "/visitor/qr?type=1";
+                            let type=1;
+
+                            if($("#pagetitle").text().search("Check")>-1)
+                                targeturl = "/visitor/checkout";
+                            else if($("#pagetitle").text().search("Scan")>-1){
+                                targeturl = "/visitor/qr?type=2";
+                                type = 2;
+                            }
+                        
+                            console.log();
+                        
+
+                        
+                        getJSON(res,targeturl/**/,(err, data) => {
+                            if (err != null) {
+                                                    console.error(err);   
+                                                    notification.innerHTML="System busy,please try latter" + err ;                     
+                            } else {                                            
+                                console.log("data: "+ data.result); 
+                                if(data.result==="ok"){
+                                    if(type===2){
+                                        $("#confirm-menu-title").html("Visitor Informaiton");
+                                        $("#alert-infomation").html(['<table style="text-align:left"><tbody><tr><td>Name</td><td>',
+                                        data.name, "</td><td></tr>",
+                                        "<tr><td>Email</td><td>"  ,data.email,"</td><td></tr>",
+                                        "<tr><td>Company Name</td><td>"  ,data.companyname,"</td><td></tr></tbody></table>"
+                                        ].join(""));
+                                    }else{ //type=1
+                                        $("confirm-menu-title").html("Preregistered Appointment Informaiton");
+                                        $("#alert-infomation").html(['table style="text-align:left"><tbody><tr><td>Name</td><td>',
+                                        data.name, "</td><td></tr>",
+                                        '<tr><td style="margin-right:10px">Email</td><td>'  ,data.email,"</td><td></tr>",
+                                        '<tr><td style="margin-right:10px">Company Name</td><td>'  ,data.companyname,"</td><td></tr>",
+                                        '<tr><td style="margin-right:10px">Company Contact Name</td><td>'  ,data.contactname,"</td><td></tr>",
+                                        '<tr><td style="margin-right:10px">Company Appointment Time</td><td>'  ,data.preregistertime,"</td><td></tr></tbody></table>"
+                                        ].join(""));
+                                    }                                    
+                                    $("#menu-confirm").showMenu(); 
+                                     
+                                    $('body').find('.menu-hider').addClass('no-click');                                
+                                }else{
+
+                                    $("#confirm-menu-title").text("Scan failed");
+                                    $("#alert-infomation").html("<h2>Description: " + data.description + "</h2>");
+                                    $("#menu-confirm").showMenu();
+                                    $('body').find('.menu-hider').addClass('no-click'); 
+                                }
+                                if(data.url){
+                                   url = data.url;
+                                }
+                            }},10000);
+                        });
+                    }};
+                    
+        }else{
+                if(inittime===0){
+                setTimeout(qr_init,1000);
+                inittime=1;
+                }
+                else{
+                    console.error("fail to init qr");
+                    window.location.href="/";
+                }
+        }
+  
+}
+    
+  
+  $(document).ready( ()=>{
+      qr_init();
+
+      $("#menu-confirm-ok").click((evt)=>{
+          if(url)
+          window.location.href = url;
+      });
+      });
+ 
+ 
+
+
+function handleSuccess(stream){
+        console.log("video init...");
+        video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+        video.srcObject = stream;
+        video.play();
+        
+        scanning = true;
+        video.style.visibility = true;
+        console.log("#video-overlay-shader: " +  $("#video-overlay-shader").attr("hidden"));
+        $("#video-overlay-shader").removeAttr("hidden");
+        notification.style.display = "none"
+        tick();
+        scan();
+
+}
+
+function handleError(err){
+
+    alert(err);
+    window.location.href="/";
+
+}
+
+function tick() {
+    qrcanvas.height = video.videoHeight;
+    qrcanvas.width = video.videoWidth;
+    qrcanvas.getContext('2d').drawImage(video,0, 0,qrcanvas.width,qrcanvas.height);// );//195,115,250,250
+
+     
+
+    scanning && requestAnimationFrame(tick);
+}
+var counter = 0;
+function scan(){
+try {
+     qrscanner.decode();
+} catch (e) {
+    counter += 1;
+    console.log("err: " +  e);
+    console.log("qrscanner: " + qrscanner);
+    let m = e+" ";
+    if((counter%3===0) ||
+     (m.search("found 1")>-1 && counter%2===0) ||
+    (m.search("found 2") >-1) ||
+    (m.search("found 3")>-1))
+       heartbeat();
+    
+       if(scanning)
+          setTimeout(scan, 300);
+}
+}
+
+function heartbeat(){
+    let hbs = document.getElementsByClassName("hb-1");
+    
+    if(hbs)
+    for(hb of hbs){
+        if(hbp==1)
+          hb.style.backgroundColor="green";
+        else
+          hb.style.backgroundColor="white";
+        
+    }
+     hbp = hbp===0?1:0;
+
+}
+function getJSON(data,url, callback){
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', url, true);
+    xhr.responseType = 'json';
+
+    xhr.onload = () => {
+
+    let status = xhr.status;
+
+    console.log("ajax status:" + status);
+
+    if (status == 200) {
+        callback(null, xhr.response);
+    } else {
+            callback(status);
+    }
+    };
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.send(JSON.stringify({ "qr":data}));
+    console.log("ajax: " + data);
+}
+
+
+</script>
+
+
+</body>
+</html>

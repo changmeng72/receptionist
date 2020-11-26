@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrival notification</title>
+</head>
+ 
+     
+<body style="background-color: #ffffff">
+
+    <div style = "margin:auto">
+
+    <table >
+        <thead>
+            <tr> <td colspan="2"> <h1 style="text-align: center;">You have a visitor now!</h1></td></tr>
+             
+        </thead>
+        <tbody>
+            <tr><td> Visitor Name</td><td><h3><%=data.visitorname %></h3></td></tr> 
+            <tr><td> Company Name</td><td><h3><%=data.companyname %></h3></td></tr> 
+            <tr><td> Arrival Time</td><td><%=data.datetime %></td></tr>
+            <tr><td> Button type</td><td><%=data.buttontype %></td></tr>            
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
