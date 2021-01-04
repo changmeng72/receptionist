@@ -6,7 +6,7 @@
             <a href="/" class="header-title">
                 <img src="/image/logo.png" class="max-auto mr-1 scale-box" height="30"></img>ABC company
             </a>
-            <a href="/" data-back-button class="header-icon header-icon-1"><i class="fas fa-arrow-left fa-3x" ></i>
+            <a href="/" data-back-button class="header-icon header-icon-1"><i class="fas fa-arrow-left fa-1x" ></i>
                 <!--img src="/image/cancel.png" height="50"/> </a-->     
             </a>   
         </div>
@@ -30,7 +30,7 @@
                     </div> 
                     <div class="card-body">
                     <div  id="signature-div" >
-                      <canvas id='signature-1' style="border-style: dotted;"></canvas>        
+                      <canvas id='signature-1' style="border-style: dotted;" width="360" height="240"></canvas>        
                     </div> 
                   </div>
                   
@@ -95,13 +95,13 @@ function setupCanvas(canvas) {
 // Get the device pixel ratio, falling back to 1.
 var dpr = window.devicePixelRatio || 1;
 // Get the size of the canvas in CSS pixels.
-console.log("dpr:" + dpr);
+
 var rect = canvas.getBoundingClientRect();
 // Give the canvas pixel dimensions of their CSS
 // size * the device pixel ratio.
 //console.log(rect.width);
-canvas.width = rect.width * dpr;
-canvas.height = rect.height * dpr;
+//canvas.width = rect.width * dpr;
+//canvas.height = rect.height * dpr;
 var ctx = canvas.getContext('2d');
 // Scale all drawing operations by the dpr, so you
 // don't have to worry about the difference.
@@ -120,14 +120,13 @@ function drawText(ctx){
 
 function tosubmit(evt){
   var dataUrl = canvas.toDataURL();
-  console.log(dataUrl);
-  console.log("strokes:" + strokes);
+ 
   if(dataUrl && strokes>10){     
       var sig2submit = document.getElementById('sig-1');
       sig2submit.value = dataUrl;  
       $('#form-1').submit();  
   }else{
-    console.log("ddddded:" + strokes);
+  
     //alert("Please sign your name and then press accept.");
     $("#menu-warning-1").showMenu();
     evt.preventpreventDefault();

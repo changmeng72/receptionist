@@ -1,70 +1,78 @@
-<%- include('./../sticky_html_start') %>
-<div id="page">
-    <div class="header header-fixed header-logo-center" style="height:70px;z-index: 100000;" >
-        <a href="#" class="header-title " style="font-size : 1rem;overflow:hidden;"><img src="/image/logo.png" class="max-auto mr-1 scale-box" height="60"> ABC company</a>
-        
-        <a  href="#" class="header-icon header-icon-1 mt-2  ml-2" id="sidebarCollapse" >
-            <i class="fas fa-bars fa-3x "></i>
-        </a>   
-             
-    </div>
 
-    <!-- footer is removed-->
     
-    <div class="page-content header-clear-medium " style="padding-top:80px;background-color: white;" id="content">
-        <div id="dashboard" style="position:relative; background-color: white; min-width:357px" >
-            <div class="text-center text-uppercase "> <h1>Visitor log</h1></div>
+    
+            <div class="text-center text-uppercase "> <h1> 
+                
+                <%= title%>
+            </h1></div>
             <div class="divider mt-3"></div>
 
             <div id="datasheet-zone" style="margin-left:1rem;margin-right:1rem;margin-top:3rem;">
                 <div id="datasearch-zone">
                      <div id="condition-zone" class="table-responsive" >
-                        
+                        <% if(activelog===true) {%>  
+                        <form action="/admin/visitlog?active" method="post" id="visitlog-form"> 
+                         <input name="activelogflag" value="0" type="text" hidden />
+                         <%}else{%>
+                            <form action="/admin/visitlog" method="post" id="visitlog-form"> 
+                         <%}%>
                          <table  >
                              <thead>
                              <tr>
+                                <% if(activelog===false) {%>
                                  <td><lable>Status filted</lable></td>
-                                 <td><lable>Button type</lable></td>
+                                 <% } %>
+                                 <td><lable>Reason type</lable></td>
                                  <td><lable>Date range</lable></td>
-                                 <td><lable>Search time</lable></td>
-                                 <td><lable>7</lable></td>
+                                 <td><lable>Visitor Name</lable></td>
+                                 
                             </tr>
                         </thead>
-                             <tr>
+                        
+                               
+                        
+                             <tr> 
+                                <% if(activelog===false) {%>
                                  <td>
-                                    
-                                        <select  id="statusfilted" >
-                                            <option>Checked In</option>
-                                            <option >Checked Out</option>
-                                            <option>Pre registered</option>                                       
+                                   
+                                        <select  name="statusFilted" >
+                                            <option value='0' selected disabled>Status</option>
+                                            <option value="Checkedin">Checked In</option>
+                                            <option value="Checkedout">Checked Out</option>
+                                            <option value ="Preregistered">Preregistered</option>                                       
                                         </select>
                                    
                                 </td>
+                                <%}%>
                                 <td>
-                                    <select  id="buttontype" style="line-height: 40px;"">
-                                            <option>Here for an appointment</option>
-                                            <option>Document deposit</option>
-                                            <option>Delivery</option>                                       
+                                    <select   style="line-height: 40px;" name="buttonType">
+                                            <option value='0' selected disabled>Reason</option>
+                                            <option value="Here for an appointment">Here for an appointment</option>
+                                            <option value="Deposit a document">Document deposit</option>
+                                            <option  value="Delivery">Delivery</option>                                       
                                         </select>
                                     
                                 </td>
+                                
                                  <td>
-                                    <input   type="text" name="datetimes" style="width:16em;" /> 
+                                    <input   type="text" style="width:23em;" value="" name="dateRange"/> 
                                 </td>
-                                  <td><input  type="text" id="condition4" />
+                                
+                                  <td><input  type="text" name="visitorName" />
                                 </td>
-                                 <td><button type="button" class="btn btn-xs btn-primary">Search</button></td>
-                                 
-                             </tr>
+                                 <td><button type="sumbit" class="btn btn-xs btn-primary" id="vdisitlog-search-button">Search</button></td>
+                            
+                             </tr> 
+                             
                          </table>
-                        
+                         </form>  
                      </div>       
                      
                 </div>  
                 
-                <div id="logopr-zone" style="float:right;margin-bottom:3px;">
+                <!--div id="logopr-zone" style="float:right;margin-bottom:3px;">
                    <button>button1</button><button>button2</button>
-                </div>
+                </div-->
                 
 
                 
@@ -74,7 +82,8 @@
                             <tr>
                                 <th>Visitor</th>
                                 <th>Contact</th>
-                                <th>Button</th>
+                                <th>Reason</th>
+                                <th>Preregistered</th>
                                 <th>Check In</th>
                                 <th>Check Out</th>
                                 <th>Action</th>
@@ -84,26 +93,41 @@
                         <tbody>
                             <% for(const visitor of visitors){ %>
                              <tr data-visit-id=<%=visitor.id %>>
-     
+                                 <% if(visitor.firstname==null){ %>
+                                 <td>Carrier</td>
+                                 <% } else { %>
                                  <td class="visitor-info"> <%- include('visitorcard2',{visitor:visitor}) %></td>
+                                 <% } %>
                                  <td> <strong><%= visitor.contactname %></strong> </td>
-                                 <td> <%= visitor.buttontype %></td>
+                                <td> <%= visitor.buttontype %></td>
+                                <td> <strong><%= visitor.preregistertime? new Date(visitor.preregistertime).toLocaleString():"" %></strong> </td>                                 
                                  <% if(visitor.checkin) {let lt = new Date(visitor.checkin);  %>
                                  <td> <%= lt.toLocaleString() %></td>
                                  <% } else {%>
                                     <td></td>
-                                 <% } if(!visitor.checkout) {%>
+                                 <% } if(visitor.checkin!==null &&  visitor.checkout===null) {%>
+                                 <%   if(visitor.buttontype!=="Here for an appointment" ){ %>
+                                    <td> <a href="#" class="btn  font-12 btn-primary text-uppercase rounded "  style="padding:1px 1px;" data-app-control="checkout">pick up</a></td> 
+                                 <%   }else{%>
                                  <td> <a href="#" class="btn  font-12 btn-warning text-uppercase rounded "  style="padding:1px 1px;" data-app-control="checkout">check out</a></td> 
-                                 <% }else {  let lt = new Date(visitor.checkout);   %>
+                                  <%}%>
+                                 <% }else if(visitor.checkout!==null) {  let lt = new Date(visitor.checkout);   %>
                                  <td> <%= lt.toLocaleString() %></td>    
-                                 <% } %>
+                                 <% } else {%>
+                                    <td></td>
+                                    <% } %>
                                  <td> 
-                                    <a  href="#" class="mt-2  ml-2" style="color: blue;" >  
-                                        <i class="fas fa-comment-alt"></i>                                      
+                                     <% if(activelog===true) {} else {%>
+                                    <a  href="#" class="mt-2  ml-2" style="color: blue;" data-app-control="new-appointment" title="Create a new appointment">  
+                                        <i class="fas fa-calendar-plus fa-1x"></i>                                      
                                     </a>
-                                     <a  href="#" class="mt-2  ml-2 " data-app-control="delete" >
+                                    <!--a  href="#" class="mt-2  ml-2" style="color: blue;" data-app-control="new-contact" title="Add to my contacts" >  
+                                        <i class="fas fa-address-book fa-1x" ></i>                                      
+                                    </a-->
+                                     <a  href="#" class="mt-2  ml-2 " data-app-control="delete" title="Delete this visit" >
                                         <i class="fas fa-trash fa-1x color-warning" style="color: Tomato"></i>
                                     </a>   
+                                    <% } %>
                                 </td>  
                                  
                              </tr>
@@ -116,53 +140,77 @@
               </div>
 
             
-        </div>
-    </div>
-     
-    <!--menu-->
-    <div id= "menu-alert" class="menu menu-box-modal rounded-m" data-menu-height="200" 
-        data-menu-width="330" style="height:200px; width:330px;display:block;">
-        <h1 class="text-center mt-3 pb-1">Alert/h1>
-        <p class="boxed-text-1 text-center" id="alert-text">
-          to be inserted
-        </p>
-        <div class=" mr-3 ml-3 mb-0">
-            <div  >
-                <a id="menu-confirm-ok" href="#" class="close-menu btn btn-sm btn-full button-s shadow-1 rounded-s text-uppercase font-900 bg-alert-dark">OK</a>
-            </div>            
-        </div>
-    </div>
+      
+   
 
 
-  <%- include("navigator",{data:{name:data.name,photo:data.photo}}) %>
-  
-<%- include('./../sticky_html_end') %>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 <script>
     $(function() {
-         $('input[name="datetimes"]').daterangepicker({
+
+         $('input[name="dateRange"]').daterangepicker({
             timePicker: true,
-            startDate: moment().startOf('hour'),
-                endDate: moment().startOf('hour').add(32, 'hour'),
+           // startDate: moment().startOf('hour'),
+            //    endDate: moment().startOf('hour').add(32, 'hour'),
             locale: {
-                format: 'M/DD hh:mm A'
-            }
-        });      
+                format: 'YYYY-MM-DD, hh:mm A' /*'M/DD hh:mm A'2020-12-11, 5:03:00 p.m.	*/
+            },
+            autoUpdateInput: false
+
+        });  
+
+        
+        
+
+       /* */
+
+        
+        
     });
 
     $(function(){
+         
+      $("#visitlog-form").submit((evt)=>{
+            
+            evt.preventDefault(); 
+
+       
+             $.ajax({
+                url:  $("#visitlog-form").attr('action'),
+                type: $("#visitlog-form").attr('method'),
+                data: $("#visitlog-form").serialize(),
+                success:(res)=>{
+                    if(res.result==='ok'){
+                        $("#dashboard").html(res.html);
+                    }
+                    else{
+                        showNotification("System busy",res.description);
+                    }
+                },
+                error:(err)=>{
+                    console.error(err);
+                    showNotification("System Error",err);
+
+                }
+
+            });
+         });
+
+
+    });
+    
+    ////////////////////
+    $(function(){
+
         $("table a").on('click',(evt)=>{
             /*check out*/
-            console.log("a click");
+            //console.log("a click");
             let visitid = $(evt.currentTarget).closest('tr').attr('data-visit-id');
             
             switch($(evt.currentTarget).attr('data-app-control')){
                 case 'checkout':
                 {                     
                     $.post("/visitor/checkout", {qr:JSON.stringify({visitid:visitid})},(res)=>{
-                        console.log("post checkout:" + res.checkout);
                         if(res.checkout){
                              let nt = new Date(res.checkout);
                              $(evt.currentTarget).closest('td').html(nt.toLocaleString());    
@@ -174,7 +222,6 @@
                 case 'delete':
                 { 
                     $.post("/admin/deletevisit", {visitid:visitid},(res)=>{
-                        console.log("post deletevisit:" );
                         if(res.result==='ok')
                           $(evt.currentTarget).closest('tr').remove();
                         else{
@@ -185,6 +232,14 @@
                     },'json');
                 }
                 break;
+
+                case 'new-appointment':
+                fetchdata("/admin/appointment?visitid=" + visitid); 
+                    break;
+                case 'new-contact':
+                fetchdata("/admin/appointment?visitid=" + visitid);
+                    break;
+
                 default:
                     break;
 
@@ -192,13 +247,29 @@
             }
              
         });
-
-        
-
+        //////////////////////
+        //console.log("ok!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+       
     });
+    function fetchdata(url){
+    $.get(url,(res,status)=>{
+        
+                           if(status==="success") {
+                             if(res.result==='ok'){
+                                    $("#dashboard").html(res.html);
+                             }
+                             else{
+                                 showNotification("System error", res.description);
+                             }
 
-   
-   
+                           }
+                           else{
+                            showNotification("System error", "operation failed");
+                           }
+                             
+
+                    } );
+    }
   
 
 </script>
@@ -207,5 +278,3 @@ table select{
     height:34px;
 }
  </style>
-</body>
-</html>

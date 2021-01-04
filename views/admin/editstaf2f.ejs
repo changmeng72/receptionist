@@ -1,0 +1,112 @@
+
+
+<div class="card border-primary " style="min-width: 300px;height:50rem">
+    <div class="card-body ml-3 mr-3 mt-5">
+        <div class="card-title text-center"><h2>Edit Employee Data</h2></div>
+        
+        <div>
+            <!--form action="<%= data.url %>" method="update" id="employee-form">
+
+                <div class="input-style has-icon input-style-1 input-required">
+                            <i class="input-icon fa fa-user"></i>
+                            <span>Name</span>
+                            <em>(required)</em>
+                            <input type="text" placeholder="Name" id="employee-name" required value="<%= data.employee.firstname %>">
+                </div> 
+
+                <div class="input-style has-icon input-style-1 input-required">
+                    <i class="input-icon fa fa-at color-theme"></i>
+                    <span>Email</span>                    
+                    <input type="email" placeholder="Email" id="employee-email" value="<%= data.employee.email %>" disabled>
+                </div>
+
+                <div class="input-style has-icon input-style-1 input-required">
+                    <i class="input-icon fa fa-phone color-theme"></i>
+                    <span>Phone Number</span>                    
+                    <input type="tel" placeholder="Phone Number" id="employee-phonenum" value="<%= data.employee.phonenum %>">
+                </div>
+
+
+                <div class="input-style has-icon input-style-1 input-required">
+                    <span>Department</span> 
+                    <i class="input-icon fa fa-building"></i>                                       
+                    <select  name="department" class="form-control" id="employee-department" placeholder="Department">
+                        <% if(data.employee.department) {%>
+                        <option value="0" disabled selected>Select a department</option>
+                        <% }else{ %>
+                        <option value="0" disabled >Select a department</option>
+
+                        <% } for(const department of data.departments){%>
+                            <% if(department===data.employee.department){ %>
+                            <option value="<%= department %>" selected><%= department %></option>
+                            <%}else{%>
+                            <option value="<%= department %>"><%= department %></option>
+                            <% }%>
+                        <% }%>
+                    </select>
+                        
+                </div> 
+                <div class="input-style  has-icon  input-style-1 input-required"  >
+                    <span>Position</span>  
+                    <i class="input-icon fa fa-building"></i>  
+                     <em><i class="fa fa-building"></i></em>                                     
+                    <select    class="form-control" id="employee-position" placeholder="Position">
+                        <% if(data.employee.position) { %>
+                          <option value="0" disabled >  Select a position</option>
+                        <% }else{%>
+                         <option value="0" disabled selected>  Select a position</option>
+                         <%}%>
+                        <% for(const position of data.positions){%>
+                            <% if( position====data.employee.position){%>
+                            <option value="<%= position %>" selected> <%=position%></option>
+                            <% }else{ %>
+                            <option value="<%= position %>"> <%=position%></option>
+                            <% } %>
+                        <% }%>
+                    </select>
+                </div> 
+                
+                
+                <div class="divider diverder-margins bg-blue2-dark mb-2"></div>
+
+                <button type="submit" class="btn btn-primary text-uppercase btn-sm"  >Upate</button>
+                <button type="reset" class="btn btn-secondary text-uppercase"  >Reset</button>
+                
+                 
+            </form -->
+        </div>
+    </div>
+    
+</div>
+
+<script>
+    /*
+    $("#employee-form").submit((evt)=>{
+        evt.preventDefault();
+
+        console.log("phone: " + $("#phonenum").val());
+        $.ajax({
+            url:$("#employee-form").attr('action'),
+            type: $("#employee-form").attr('method'),
+            data:{contact:JSON.stringify({name: $("#employee-name").val(),
+                  email:$("#employee-email").val(),                  
+                  phonenum:$("#employee-phonenum").val(),
+                  department:$("#employee-department").val(),
+                  position:$("#employee-position").val(),
+                  })},
+            error:(err)=>{
+                showNotification("Creation failed","Operation failed!");
+            },
+            success:(res)=>{
+                if(res.result==='ok'){
+                    $("#employee-form").trigger('reset');
+                    showNotification("Creation successful",res.description);
+                }
+                else{
+                    showNotification("Creation failed",res.description);
+                }
+
+            }
+        });
+    });*/
+</script>

@@ -1,68 +1,50 @@
-<%- include('./../sticky_html_start') %>
-<div id="page">
-    <div class="header header-fixed header-logo-center" style="height:70px;z-index: 100000;" >
-        <a href="#" class="header-title " style="font-size : 1rem;overflow:hidden;"><img src="/image/logo.png" class="max-auto mr-1 scale-box" height="60"> ABC company</a>
-        
-        <a  href="#" class="header-icon header-icon-1 mt-2  ml-2" id="sidebarCollapse" >
-            <i class="fas fa-bars fa-3x "></i>
-        </a>   
-             
-    </div>
-
-    <!-- footer is removed-->
-    
-    <div class="page-content header-clear-medium " style="padding-top:80px;" id="content">
-        
+      
        
     
-    
-        <div id="dashboard" style="margin:auto; position:relative">
-  
-
             <div class="card border-primary " style="min-width: 300px;height:50rem">
                 <div class="card-body ml-3 mr-3 mt-5">
                     <div class="card-title text-center"><h2>Create a new appointment</h2></div>
-                    <div>
+                    <!--div>
                         <button type="button" class="btn btn-info btn-xxs text-uppercase" style="padding:1px 1px;">Selet a contact from MyContacts</button>
-                    </div>
+                    </div-->
                     <div>
                         <form action="/admin/appointment" method="post" id="register-form">
                             
-                            <div class="input-style has-icon input-style-2 input-required">
+                            <div class="input-style has-icon input-style-1 input-required">
                                 <i class="input-icon fa fa-book"></i>
                                 <span>Subject</span>
-                                <input type="name" placeholder="Subject" name="subject">
+                                <input type="text" placeholder="Subject" name="subject">
                             </div> 
 
-                            <div class="input-style has-icon input-style-2 input-required">
+                            <div class="input-style has-icon input-style-1 input-required">
                                         <i class="input-icon fa fa-user"></i>
                                         <span>Name</span>
                                         <em>(required)</em>
-                                        <input type="name" placeholder="Name" name="contactname">
+                                        <input type="text" placeholder="Name" name="contactname" required value="<%= data.contact.firstname %>">
                             </div> 
 
-                            <div class="input-style has-icon input-style-2 input-required">
-                                <i class="input-icon fa fa-at color-theme"></i>
+                            <div class="input-style has-icon input-style-1 input-required">
+                                <i class="input-icon fa fa-at "></i>
                                 <span>Email</span>   
                                 <em>(required)</em>                    
-                                <input type="email" placeholder="Email" name="email">
+                                <input type="email" placeholder="Email" name="email" required value=<%= data.contact.email %>>
                             </div>
 
-                            <div class="input-style has-icon input-style-2 input-required">
+                            <div class="input-style has-icon input-style-1 input-required">
                                 <i class="input-icon fa fa-building"></i>
                                 <span>Company Name</span>                                                
-                                <input type="name" placeholder="Company Name" name="companyname">
+                                <input type="text" placeholder="Company Name" name="companyname" value="<%= data.contact.companyname %>">
                             </div> 
                             
-                            <div class="input-style has-icon input-style-2 input-required">
+                            <div class="input-style has-icon input-style-1 input-required">
                                 <i class="input-icon fa fa-clock-o"></i>
                                 <span>Appointment Time</span>   
                                      
-                                <input type="datetime-local" placeholder="Appointment Time" name="preregistertime" required="required">
+                                <input type="datetime-local" placeholder="Appointment Time" name="preregistertime" required>
                             </div> 
                             
 
-                            <div class="input-style input-style-2 input-required">
+                            <div class="input-style input-style-1 input-required">
                                 <span>Duration</span>
                                 <em><i class="fa fa-angle-down"></i></em>
                                 <select class="form-control" name="duration">
@@ -74,15 +56,15 @@
                                 </select>
                             </div>
                             
-                            <div class="input-style has-icon input-style-2 input-required">
+                            <div class="input-style has-icon input-style-1 input-required">
                                 <i class="input-icon fa fa-building"></i>
                                 <span>Location</span>                    
                                 <input type="text" placeholder="Location" name="location">
                             </div> 
 
-                            <div class="input-style input-style-2 input-required">
+                            <div class="input-style input-style-1 input-required">
                                 <span>Description of the appointment</span>
-                                <textarea  class="form-control" placeholder="" name="description"></textarea>
+                                <textarea  class="form-control" placeholder="Description of the appointment" name="description"></textarea>
                             </div>
 
                             
@@ -93,7 +75,7 @@
                                 <label for="box3-fac-checkbox">Send an invite to the contact</label>
                             </div>
 
-                            <input   type="text" value=""  id="contactid" name="contactid" hidden/>
+                            <input   type="text"   id="contactid" name="contactid" hidden value= "<%= data.contact.id %>"/>
 
                             <div class="divider diverder-margins bg-blue2-dark mb-2"></div>
         
@@ -106,28 +88,57 @@
                 </div>
             
             </div>
-        </div>
-    </div>
+
+   
 
 
 
  
-  <%- include('navigator',{data:{name:data.name ,photo:data.photo}})%>
-  
-<%- include('./../sticky_html_end') %>
+
 
 
     <script>
-   /*
+   
    $(function(){
-       console.log("running");
-       $(".vertical-nav a").on("click",(evt)=>{
-         window.location.href = $(evt.currentTarget).attr("data-href");
-       });
+         
+    $("#register-form").submit((evt)=>{
+        evt.preventDefault();
+        
+        const formdata = $("#register-form").serialize();
 
-  });
+        $.ajax(
+            {
+                url: $("#register-form").attr('action'),
+                type: $("#register-form").attr('method'),
+                data:formdata,
+                success:(data)=>{
+                    if(data.result==='ok'){
+                        showNotification("Appointment created", data.description||"");
+                    }
+                    else{
+                        showNotification("Appointment creation failed", data.description||"");
+                    }
 
-*/
+                    $("#register-form").trigger('reset');
+                },
+                error: (err)=>{
+                    console.error(err);
+                    showNotification("Appointment creation failed", "Appointment creation failed");
+                     
+
+                }
+            }
+        );
+
+
+    });
+       
+
+        
+
+  })();
+
+
 </script>
 </body>
 </html>

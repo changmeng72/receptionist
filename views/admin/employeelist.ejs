@@ -1,0 +1,240 @@
+<div class="pl-1 pr-1">
+    <div class="text-center text-uppercase "> <h1>Staff management</h1></div>
+                
+    <div class="divider mt-3"></div>
+
+    <!--div id="uploader-processer" style="width:300px; border:1px solid white;z-index: 2000; position:fixed;background-color: blueviolet;margin:auto">
+                
+    <p id="f1_upload_process" style="color: white;" >Uploading...,please wait<br/><img src="/image/waiting.gif" style="width:300px" /></p>
+    <p id="result"></p>
+  </div -->
+    <div  class=" bs-bars" id="toolbar">
+            <a id="staff-removebatch" href="#" class="btn btn-primary shadow-s rounded-s text-uppercase pt-0 pb-0"><i class="fas fa-trash "></i>Remove</a>
+            <a id="staff-create" href="#" class="btn btn-primary shadow-s rounded-s text-uppercase  pt-0 pb-0"><i class="fas fa-plus "></i>Create</a>
+            <form id="staff-formupload" action="/admin/employee/upload" method="post" target="iframeforuploadonly" enctype="multipart/form-data" style="display:inline-block">
+                <label for="staff-uploadfile" class="btn btn-primary shadow-s rounded-s text-uppercase mb-0  pt-0 pb-0 "><i class="fas fa-upload "></i>Upload</label>
+                <input type="file" id="staff-uploadfile" name="staffUploadfile" style="display: none" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+            </form>
+    </div>
+    <iframe name="iframeforuploadonly" style="width:0px;height:0px;border: none;" hidden></iframe>
+    
+    <table
+      id="staff-table"
+      data-toggle="staff-table"
+      data-height="460"
+      data-ajax="ajaxRequestStaff"
+      data-search="true"
+      data-side-pagination="server"
+      data-toolbar="#toolbar"
+      data-pagination="true"
+      data-id-field="_id"
+      data-unique-id="_id"
+      data-response-handler="responseHandlerStaff">
+      
+    </table>
+    
+    
+    
+    <script>
+      // your custom ajax request here query string= search=&sort=&order=&limit=&offset=
+      //response data
+      /*
+      {"total": 11,
+      "totalNotFiltered": 800,
+      "rows": {
+          "id": 118,
+          "name": "Item 118",
+          "price": "$118"
+        },
+    }
+      */
+      var $table = $('#staff-table');
+      var $remove = $('#staff-remove');
+      var selections = [];
+    
+      function ajaxRequestStaff(params) {
+        var url = '/admin/employee'
+        $.get(url + '?' + $.param(params.data)).then(function (res) {
+           
+          params.success(res)
+        })
+      }
+      function responseHandlerStaff(res) {
+        $.each(res.rows, function (i, row) {
+          row.state = $.inArray(row._id, selections) !== -1;
+        })
+        return res;
+      }
+      window.operateEvents = {
+            
+            'click .delete-a-emloyee': function (evt, value, row, index) {
+                 
+                 
+                 $.post("/admin/employee/"+row._id+"?_method=delete",
+                       {},
+                       (res)=>{
+                            if(res.result && res.result==='ok'){
+                                showNotification("Delete successed",res.description || "Operation sucess");
+                               /* $table.bootstrapTable('remove', {
+                                  field: '_id',
+                                  values: [row._id]
+                                  });*/
+                                  $table.bootstrapTable('removeByUniqueId', row._id)
+
+                                  
+                            }
+                            else{
+                                showNotification("Delete failed",res.description || "System busy");
+                            }
+                            },
+                        "json");
+            },
+          
+          'click .edit-a-employee':function (evt, value, row, index) {
+           
+
+            $.ajax({
+              url : "/admin/employee/edit?id="+row._id,
+              type:"GET",
+              error: (err)=>{
+                       console.error(err);
+                       
+                   },
+              success:(data)=>{
+                       
+                       $("#dashboard").html(data);
+                   }
+            });
+
+
+                 
+          },
+    
+        };
+      function initTable(){
+        $table.bootstrapTable('destroy').bootstrapTable({
+          height: 550,
+          columns: [
+            [
+             
+            {
+              field: 'state',
+              checkbox: true,           
+              align: 'center'
+              
+            },
+            {
+              title: 'Name',
+              field: 'firstname',
+              align: 'center',
+              sortable: true
+            }, {
+              field:"department",
+              title: 'Department',
+              align: 'center',
+              sortable:true
+            },{
+              field:"position",
+              title: 'Position',
+              align: 'center',
+              sortable:false
+            }, {
+              field:"email",
+              title: 'Email',
+              align: 'center',
+              sortable: false
+            } , 
+            {
+              field:"phonenum",
+              title: 'Phone',
+              align: 'center',
+              sortable: false
+            } ,
+            {
+              field:"role",
+              title: 'Role',
+              align: 'center',
+              sortable: false
+            } 
+            ,{
+                field: 'operate',
+              title: 'Operation',
+              align: 'center',
+              clickToSelect: false,
+              events: window.operateEvents,
+              formatter: operateFormatter
+               
+            } 
+        
+        ]]
+      });}
+    
+       function operateFormatter(value, row, index) {
+        return [          
+          //'<a class="edit-a-employee pr-3" href="javascript:void(0)" title="EDIT">',
+          //'<i class="fa fa-edit"></i>',
+         // '</a>',
+          '<a class="delete-a-emloyee" href="javascript:void(0)" title="DELETE">',
+          '<i class="fa fa-trash"></i>',
+          '</a>'
+        ].join('')
+      }
+     /*
+      $(function(){
+        initTable();
+      }); */
+      $(document).ready(()=>{
+        initTable();
+         
+      });
+    
+      $(function(){
+        $("#staff-removebatch").click(function(){
+           const ids = $.map($table.bootstrapTable('getSelections'),function(row){
+                return row._id;
+           });
+           $.post("/admin/employee?_method=delete",{ids:JSON.stringify(ids)},
+           (res)=>{
+            if(res.result && res.result==='ok'){
+              showNotification("Delete successed",res.description || "Operation sucess");
+               $table.bootstrapTable('remove',{field:'_id',values:ids});
+            }
+            else{
+              showNotification("Delete failed",res.description || "Operation failed");
+            }      
+          },'json');
+    
+        });
+      });
+      $("#staff-create").click(function(){
+        $("a[data-href='/admin/employee/new']").trigger('click');
+      });
+      $("#staff-uploadfile").change(function(){
+           
+          const file = $("#staff-uploadfile").val();
+          if(file){
+            
+             $("#staff-formupload").submit();
+             $("#staff-uploadfile").val("");
+          }
+        
+    
+      });
+
+      function stopUpload(success){
+      var result = '';
+      if (success == 1){
+         document.getElementById('result').innerHTML =
+           '<span class="msg">The file was uploaded successfully!<\/span><br/><br/>';
+      }
+      else {
+         document.getElementById('result').innerHTML = 
+           '<span class="emsg">There was an error during file upload!<\/span><br/><br/>';
+      }
+      document.getElementById('f1_upload_process').style.visibility = 'hidden';
+      return true;   
+}
+    </script>
+    </div>
+    
+            

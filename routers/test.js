@@ -1,4 +1,6 @@
 /*
+
+only for test
 var nt = new Date(Date.now());
 console.log(nt.toLocaleString());
 
@@ -8,6 +10,8 @@ async function test(){
      const html = await ejs.renderFile('x.html');
      console.log(html);
 }*/
+const express = require('express');
+const internalRouter = express.Router();
 const ejs = require('ejs');
 const HTMLDocx = require('html-docx-js');
 const fs = require('fs');
@@ -35,4 +39,17 @@ const imagedata = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATIAAACcCAYAAAD
   }
 }
 
-test();
+
+internalRouter.get('/', async function(req,res,next){
+     console.log("get test")
+     res.render('frame');
+});
+internalRouter.get('/photo', async function(req,res,next){
+
+     const html = await ejs.renderFile(__dirname + './../views/framelet/takaphoto.ejs');
+    
+     //console.log(html);
+     res.status(200).send(html);
+});
+ 
+module.exports = internalRouter;

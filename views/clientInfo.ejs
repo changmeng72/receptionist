@@ -6,7 +6,7 @@
         <a href="/" class="header-title">
             <img src="/image/logo.png" class="max-auto mr-1 scale-box" height="30"></img>ABC company
         </a>
-        <a href="/" data-back-button class="header-icon header-icon-1"><i class="fas fa-arrow-left fa-3x" ></i>
+        <a href="/" data-back-button class="header-icon header-icon-1"><i class="fas fa-arrow-left fa-1x" ></i>
             <!--img src="/image/cancel.png" height="50"/> </a-->     
         </a>   
     </div>
@@ -18,8 +18,8 @@
             <div class="text-center font-35 font-weight-900 color-blue2 caption-app " ><p> Please input your email address</p></div>            
             <div class="text-center font-35 font-weight-900 color-blue2 caption-app " hidden><p> Please input your name</p></div>            
             <div class="text-center font-35 font-weight-900 color-blue2 caption-app " hidden><p> Please input your company name</p></div>
-            <div class="text-center font-35 font-weight-900 color-blue2 caption-app " hidden><p> Please input question 1</p></div>
-            <div class="text-center font-35 font-weight-900 color-blue2 caption-app " hidden><p> Please input question 2</p></div>
+            <div class="text-center font-35 font-weight-900 color-blue2 caption-app " hidden><p> Please input your phone number</p></div>
+            <!--div class="text-center font-35 font-weight-900 color-blue2 caption-app " hidden><p> Please input question 2</p></div -->
              
             <div class="divider diverder-margins bg-blue2-dark mt-3 mb-5"></div>
             <div  style="margin-top:30px;"></div>
@@ -54,13 +54,13 @@
                         </div> 
 
                         <div class="input-style input-style-1 input-required" hidden>
-                            <span>Question-1</span>                             
-                            <input type="text" placeholder="Question-1" name="q1">
+                            <span>Phone Number</span>                             
+                            <input type="tel" placeholder="Phone Number" name="phonenumber">
                         </div> 
-                        <div class="input-style input-style-1 input-required" hidden>
+                        <!--div class="input-style input-style-1 input-required" hidden>
                             <span>Question-2</span>                             
                             <input type="text" placeholder="Question-2" name= 'q2'>
-                        </div> 
+                        </div--> 
 
                             <!--input class="no-outline" type="text" placeholder="" id="inputfield" onkeydown='processInput'></input>
                              <input type="hidden" name="clientInfo" value="" id="clientInfo"/ -->
@@ -78,7 +78,7 @@
                 <div class="owl-dot"><span></span></div>
                 <div class="owl-dot"><span></span></div>
                 <div class="owl-dot "><span></span></div>
-                <div class="owl-dot"><span></span></div>
+                <!--div class="owl-dot"><span></span></div -->
             </div>
 
             
@@ -108,25 +108,17 @@
       $("#menu-confirm").showMenu();
 
  }
- function ValidateEmail(mail) 
-{
- if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
-  {
-    return (true)
-  }
-    
-    return (false)
-}
+
 
  function skip(direction){
     let n =  $('.caption-app').length;
-    console.log(n);
+    
            for(let i=0;i<n;i++){
                if(!$($('.caption-app')[i]).attr("hidden")){
                     if(i===0){
 
                        let email = $("#visitor-email").val().trim();
-                       console.log(email);
+                       
                        if(email!=="" && !ValidateEmail(email)){
                            showAlert("Email address is not valid,please modify it!");
                            return;
@@ -171,7 +163,7 @@
   $(document).ready(()=>{
       $('input[name="visitorname"]').focus();
       $("#form-1").delegate('input','keyup',(evt)=>{
-          console.log("keyup:" + evt.keyCode);
+          
         if(evt.keyCode==13 ||evt.keyCode==34 ){ //'enter' or 'next'
             skip(1);            
             }
@@ -184,7 +176,7 @@
       $("#btn-skip").on('click',()=>{ skip(1);});
       $("#btn-back").on('click',()=>{skip(-1);});
       $("#btn-scan-qr").on('click',()=>{ 
-          console.log("scan");
+          
            window.location.href = "/visitor/scanvisitorinfo";
       });
            

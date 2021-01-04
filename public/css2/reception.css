@@ -1,0 +1,444 @@
+.description {
+  left: 50%;
+  position: absolute;
+  top: 45%;
+  transform: translate(-50%, -55%);
+  text-align: center;
+}
+.description h1 {
+  color: #6ab446;
+}
+.description p {
+  color: #fff;
+  font-size: 1.3rem;
+  line-height: 1.5;
+}
+
+body {
+	box-sizing: border-box;
+	font-family: fantasy;
+	background-color: white;
+	left:0px;
+	top:0px;
+	bottom:0px;
+	right:0px;
+	margin:0px;
+	 
+}
+
+.header-1 {
+	 
+	position: fixed; 
+	left:0;
+	top:0;
+	width: 100%;	 
+	text-align: center	;
+	display: flex;
+	height :30px;
+	/*border: 1px solid black;*/
+	z-index: 1;
+	/*background-color: azure;*/
+	padding-left: 5px;
+	padding-top:5px;
+	background-color: white;
+
+	/*20201112*/
+	box-sizing: border-box;
+}
+
+.header-1 img{
+	height: 30px;
+	display: inline-block;
+}
+.shortcut {
+	height: 50px;
+	width: 50px;
+	z-index: 2;
+	position:fixed;
+	top: 5px;
+	left:5px;
+}
+.shortcut img {
+	position: absolute;
+	width:100%;
+	height:100%;
+}
+.shortcut :hover{
+	 outline-style: solid;
+	 outline-width: 2px;
+	 outline-color: chartreuse;
+}
+ 
+
+.header-1 span{
+	font-size: 25px;
+	display: inline-block;
+	bottom: 3px;
+	position: absolute;
+}
+
+ 
+.row-1 { 	
+	height:80%;	
+	display:flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	top : 10%;	 
+	min-width: 600px;
+}
+
+.btn-2{
+	width:30%;
+	min-width: 200px;
+	height:40%;
+	border-radius: 8px;
+	margin-top:5px;
+	margin-right: 40px;	
+	margin-left: 40px;
+	margin-bottom:10px;
+}
+
+.btn-2 img {
+	display: inline-block;
+	height: 60px;
+}
+
+.btn-2 span{
+	display: block;
+	font-size: medium;
+}
+
+.h-center	{
+	margin: auto;
+}
+#main,.main{
+  width:100%;
+  height:85%;
+  position:absolute;
+  top:80px; 
+  
+}
+#container-1 {
+ 
+   
+  position:absolute;
+  display: block;
+  flex-direction: column;
+  width:100%;
+  
+  margin:10px auto;
+
+
+}
+
+#footer-1 {
+	width:100%;
+	position:fixed;
+	bottom: 0;
+	background-color: aqua;
+	z-index: 1;  
+  }
+/*photos*/
+
+.businesscard {
+	position:relative;
+	width:200px;
+	height:200px;
+	border:1px solid black;
+	margin-top:10px;
+	margin-right:10px;
+}
+.notification-1{
+	display:block;
+	border:3px solid rgba(green,0.7);
+	border-radius: 5px;
+	width:400px;
+	height:200px;
+	position:relative;
+}
+.businesscard img {
+	position:relative;
+	width:100%;
+	height:100%;
+}
+.businesscard .overlaytext{
+	position: absolute;
+	width:100%;
+	height:40%;
+	left:0;
+	bottom:0; 
+	background-color: rgba(255,255,255,0.7);
+}
+
+.businesscard :hover {
+	outline-style: solid;
+	outline-width: 6px;
+	outline-color: green;
+}
+ 
+
+#contact-list{
+	width:80%;
+    margin:auto;
+	height:80%;
+	display:flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	align-content: flex-start;
+	position: relative;
+	top:10px;
+
+
+}
+
+
+.info-collect{
+	width: 100%; 
+	height: 90%;
+	display:flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+.info-collect-prompt{
+	 
+	text-align: center;
+	margin-left: auto;
+	margin-right:auto;
+
+}
+.info-collect-input{
+	 
+	width : 80%;
+	text-align: center;
+	margin-left: auto;
+	margin-right:auto;
+	display:flex;
+	flex-wrap: wrap;
+
+}
+
+#inputfield{
+	border-top-width: 0px;
+	border-left-width:0px;
+	border-right-width:0px;
+	background-color: transparent;
+	text-align: center;
+	 flex:8;
+	 outline: none;
+	 
+   }
+/*
+   #inputfield :focus{
+	outline: none;	 
+	 
+   }
+   
+input {
+	border-top-style: hidden;
+	border-right-style: hidden;
+	border-left-style: hidden;
+	border-bottom-style: groove;
+	background-color: #eee;
+	 
+  }
+  
+  .no-outline :focus {
+	outline: none;
+  } */
+   
+ 
+
+.steps {
+	position: relative;
+	margin-bottom: 30px;
+	counter-reset: step;  
+	bottom: 0;
+  }
+   
+  .steps li {
+	list-style-type: none;
+	font-size: 16px;
+	text-align: center;
+	width: 20%;
+	position: relative;
+	float: left;
+}
+ 
+/*步骤数字*/
+.steps li:before {
+  display: block;
+  content: counter(step); /*设定计数器内容*/
+  counter-increment: step;  /*计数器值递增*/
+  width: 32px;
+  height: 32px;
+  background-color: #019875;
+  line-height: 32px;
+  border-radius: 32px;
+  font-size: 16px;
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+  margin: 0 auto 8px auto;
+}
+ 
+/*连接线*/
+.steps li ~ li:after {
+  content: '';
+  width: 100%;
+  height: 2px;
+  background-color: #019875;
+  position: absolute;
+  left: -50%;
+  top: 15px;
+  z-index: -1; /*放置在数字后面*/
+}
+ 
+/*将当前/完成步骤之前的数字及连接线变绿*/
+.steps li.active:before,
+.steps li.active:after {
+  background-color: #019875;
+}
+ 
+/*将当前/完成步骤之后的数字及连接线变灰*/
+.steps li.active ~ li:before,
+.steps li.active ~ li:after {
+  background-color: #777;
+}
+
+
+
+
+  
+
+#signature-1{
+	 
+	display:block;
+	width:500px;
+	height:250px;
+	 
+	/*padding:20px 50px 50px 50px;
+	
+	background-color: cornsilk;
+	margin-left:50px;
+    
+    margin:auto;*/
+}
+
+ 
+
+.card-1{
+   font-family: Georgia, 'Times New Roman', Times, serif;
+   background-color: cornsilk;
+   border: 2px sold black;
+   box-shadow: gray;
+   padding:50px 50px 50px 50px;
+  /* display:block;
+
+   position: relative;
+   top:170px;*/
+   margin-left:50px;
+   margin-right:50px;
+}
+
+.caption-2 {
+	 
+	line-height: 10px;
+	display:block;
+	font-size:50px;
+	text-align: center;
+}
+ 
+
+/*admin css*/
+ 
+#navigator {
+	box-sizing: border-box;
+	line-height:30px;
+	padding:5px;
+    background-color:gainsboro;
+	bottom:0;
+	width:200px;
+	float:left;
+	height:calc(100% - 95px);
+    	      
+}
+.main1{
+	width: calc(100% - 205px);
+	height:calc(100% - 95px);
+	float:left;
+	align-content: center;
+	background-color: gainsboro;
+	margin-left:5px;
+	margin-top:5px;
+	overflow: scroll;
+}
+
+.main-log1{
+	width: calc(100% - 205px);
+	float:left;
+	align-content: center;
+	background-color: gainsboro;
+	margin-left:5px;
+	margin-top:5px;
+}
+.body-1{
+	box-sizing: border-box;
+	background-color: silver;
+}
+
+.text-center{
+	text-align: center!important;
+}
+
+.form-signin{
+	width:100%;
+	max-width: 330px;
+	margin:auto;
+	padding:15px;
+	
+}
+.form-signin input[type='email']{
+	margin-bottom: -1px;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+
+
+.form-signin button{
+	 display:block;
+	 width:100%;
+	 border:1px solid transparent;
+	 background-color: #007bff;
+	 border-radius: 0.25rem;
+	 padding:0.5rem 1rem;
+	 margin-top: 10px;
+}
+
+.form-signin button:hover{
+	cursor: pointer;
+}
+.form-signin input[type='password']{
+	margin-bottom: 10px;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+}
+
+.mb-4{
+	vertical-align: middle;
+	border-style: none;
+	margin-bottom: 1.5rem!important;
+}
+.form-control{
+	width:100%;
+	display:block;
+	box-sizing: border-box ;
+
+	padding:10px;
+	border-radius: 0.25rem;
+	border:1px solid  #ced4da;
+	background-color: white;
+}
+ 

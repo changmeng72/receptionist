@@ -1,0 +1,195 @@
+
+
+<div class="card border-primary " style="min-width: 300px;height:50rem; ;">
+    <div class="card-body ml-3 mr-3 mt-5">
+        
+        <% if(data.edit===true && data.myinfo.photo!==null) {%>
+            <div class="card title align-items-center" style="display:flex;flex-direction: row; justify-content: center;">
+               <a href="#" id="myphoto"> <img src=" <%=  '/staff/image/' + data.myinfo.id + '_thumbnail.png' %>" alt="..." width="200"     class="mr-3 rounded-circle img-thumbnail shadow-sm"></a>
+               <h1 class="ml-3" ><%=data.myinfo.firstname%></h1>
+            </div>
+        <%}else if(data.edit===true){%>
+        
+        <!--div class="card-title text-center"><h2><%=data.title%></h2></div-->
+
+        <div class="card title align-items-center" style="display:flex;flex-direction: row; justify-content: center;">
+            <a href="#" id="myphoto"> <img src="/image/icon-man.svg
+                " alt="..." width="200"     class="mr-3 rounded-circle img-thumbnail shadow-sm"></a>
+            <h1 class="ml-3" ><%=data.myinfo.firstname%></h1>
+         </div>
+
+         <%} else {%>
+            <div class="card title align-items-center" style="display:flex;flex-direction: row; justify-content: center;">
+               
+                <h1 class="ml-3" > Create a new employee</h1>
+             </div>
+         <%}%>
+        <div>
+            <form action=<%= data.url %> method="post" id="employee-form">
+               
+
+              <!---->
+
+              
+        
+            <div class="input-style has-icon input-style-1 input-required">
+                <i class="input-icon fa fa-user"></i>
+                <span>Name</span>
+                <em>(required)</em>
+                <% if(data.edit===true) {%>
+                <input type="text" placeholder="Name" id="employee-name" disabled value="<%= data.myinfo.firstname %>"> 
+                <%}else{%>
+                <input type="text" placeholder="Name" id="employee-name" required>   
+                <%}%> 
+            </div> 
+
+            <div class="input-style has-icon input-style-1 input-required">
+                <i class="input-icon fa fa-at color-theme"></i>
+                <span>Email</span>  
+                <%if(data.edit===true) {%>                  
+                    <input type="email" placeholder="Email" id="employee-email" disabled value="<%= data.myinfo.email %>">
+                <%}else{%>
+                    <input type="email" placeholder="Email" id="employee-email" required>  
+                <%}%> 
+            </div>
+        
+            <div class="input-style has-icon input-style-1 input-required">
+                <i class="input-icon fa fa-phone color-theme"></i>
+                <span>Phone Number</span>                    
+                 <%if(data.edit===true) {%>   
+                    <input type="tel" placeholder="Phone Number" id="employee-phonenum" value="<%= data.myinfo.phonenum %>">               
+                 <%}else{%>
+                    <input type="tel" placeholder="Phone Number" id="employee-phonenum"> 
+                <%}%> 
+            </div>
+            
+            <div class="input-style has-icon input-style-1 input-required">
+                <span>Department</span> 
+                <i class="input-icon fa fa-building"></i>    
+                <%if(data.edit===true) {%>  
+                    <select  name="department" class="form-control pl-4" id="employee-department" placeholder="Department">
+                         
+                        <option value="<%=data.myinfo.department%>" disabled selected ><%=data.myinfo.department%></option>
+                        
+                    </select> 
+                <%}else{%>                                 
+                <select  name="department" class="form-control  pl-4" id="employee-department" placeholder="Department">
+                    <option value="0" disabled selected>Select a department</option>
+                    <% for(const department of data.departments){%>
+                        <option value="<%= department %>"><%= department %></option>
+                    <% }%>
+                </select>
+              <%}%>      
+            </div> 
+              
+        
+        
+                       <!---->
+                <div class="input-style  has-icon  input-style-1 input-required"  >
+                    <span>Position</span>  
+                    <i class="input-icon fa fa-layer-group mr-2"></i>  
+                     <em><i class="fa fa-building"></i></em>    
+                <%if(data.edit===true) {%> 
+                    <select    class="form-control pl-4" id="employee-position" placeholder="Position">
+                        <option value="<%= data.myinfo.position%>" disabled selected>  <%= data.myinfo.position%></option>
+                      </select>
+                <% }else{%>                                  
+                    <select    class="form-control  pl-4" id="employee-position" placeholder="Position">
+                        <option value="0" disabled selected>  Select a position</option>
+                        <% for(const position of data.positions){%>
+                            <option value="<%= position %>"> <%=position%></option>
+                        <% }%>
+                    </select>
+                <%}%>
+                </div> 
+                
+                <%if(data.edit===false) {%> 
+                <div class="input-style  has-icon  input-style-1 input-required"  >
+                    <span>Role</span>  
+                    <i class="input-icon fa fa-building"></i>  
+                     <em><i class="fa fa-building"></i></em>                                     
+                    <select    class="form-control  pl-4" id="employee-role" placeholder="Position">
+                        <option value="0" disabled selected>  Select a role</option>
+                        <option value="common" > Common Employee</option>
+                        <option value="receptionist">Receptionist</option>
+                        <option value="admin" style="color:red">Amdin</option>
+                        
+                    </select>
+                </div> 
+                <%}%>
+                        
+    
+                <div class="divider diverder-margins bg-blue2-dark mb-2"></div >
+
+                <button type="submit" class="btn btn-primary text-uppercase btn-sm"  >
+                    <%if(data.edit===false) {%> 
+                        Create
+                     <%}else{%> 
+                            Update
+                     <%}%>
+                </button>
+                <%if(data.edit===false) { %> 
+                <button type="reset" class="btn btn-secondary text-uppercase"  >Reset</button>
+                <%}%>
+                
+            </form>
+        </div>
+      
+    </div>
+    
+</div>
+<script type="text/javascript" src="/scripts/custom.js"></script>
+<script>
+    
+    $("#myphoto").click(()=>{
+                
+       
+
+       window.popup = window.open('/admin/myphoto', 'importwindow', 'width=640, height=800, top=0, left=200');
+
+       const timer = setInterval(()=>{
+           if(window.popup.closed){
+             clearInterval(timer);
+             window.location.href = "/admin"
+           }
+
+       },500);
+
+        
+      
+    });
+
+    $("#employee-form").submit((evt)=>{
+        evt.preventDefault();
+
+        $.ajax({
+            url:$("#employee-form").attr('action'),
+            type: $("#employee-form").attr('method'),
+            data:{contact:JSON.stringify({name: $("#employee-name").val(),
+                  email:$("#employee-email").val(),                  
+                  phonenum:$("#employee-phonenum").val(),
+                  department:$("#employee-department").val(),
+                  position:$("#employee-position").val(),
+                  role:$("#employee-role").val()
+                  })},
+            error:(err)=>{
+                showNotification("Creation failed","Operation failed!");
+            },
+            success:(res)=>{
+                if(res.result==='ok'){
+                    if($("#employee-form").attr('action').search('put')!==-1){
+                        showNotification('Update successfully',res.description);
+
+                    }else{
+                    $("#employee-form").trigger('reset');
+                    showNotification("Creation successful",res.description);
+                    }
+                }
+                else{
+                    showNotification("Creation failed",res.description);
+                }
+
+            }
+        });
+    });
+</script>

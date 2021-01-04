@@ -3,8 +3,18 @@
             
 <div class="divider mt-3"></div>
             
-           
-         
+
+
+<div  id ="toolbar">
+  <a id="removebatch" href="#" class="btn btn-primary shadow-s rounded-s text-uppercase pt-0 pb-0 mt-3"><i class="fas fa-trash "></i>Remove</a>
+  
+  <!--a id="createnew" href="#" class="btn btn-primary shadow-s rounded-s text-uppercase  pt-0 pb-0 mt-3"><i class="fas fa-plus "></i>Create</a-->
+ <!--form id="formupload" action="/contact/upload" method="post" target="iframeforuploadonly" enctype="multipart/form-data" style="display:inline-block">
+    <label for="uploadfile" class="btn btn-primary shadow-s rounded-s text-uppercase mb-0  pt-0 pb-0 mt-3"><i class="fas fa-upload "></i>Upload</label>
+    <input type="file" id="uploadfile" name="uploadfile" style="display: none" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+  </form -->
+  </div>
+<iframe name="iframeforuploadonly" style="width:0px;height:0px"></iframe>
 
 <table
   id="table"
@@ -15,11 +25,12 @@
   data-side-pagination="server"
   data-pagination="true"
   data-id-field="_id"
+  data-toolbar="#toolbar"
   data-response-handler="responseHandler">
   
 </table>
 
-<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+
 <script>
   // your custom ajax request here query string= search=&sort=&order=&limit=&offset=
   //response data
@@ -40,42 +51,66 @@
   function ajaxRequest(params) {
     var url = '/contact'
     $.get(url + '?' + $.param(params.data)).then(function (res) {
-        console.log(res);
+       
       params.success(res)
     })
   }
   function responseHandler(res) {
     $.each(res.rows, function (i, row) {
-      row.state = $.inArray(row.id, selections) !== -1
+      row.state = $.inArray(row._id, selections) !== -1;
     })
-    return res
+    return res;
   }
-  window.operateEvents = {
+  var operContactEvents = {
         
         'click .delete-a-contact': function (evt, value, row, index) {
-             console.log("delete a contract:" + row._id);
+            
              $.post("/contact/"+row._id+"?_method=delete",
                    {name:"124"},
                    (res)=>{
                         if(res.result && res.result==='ok'){
                             showNotification("Delete successed",res.description || "Operation sucess");
+                            
                             $table.bootstrapTable('remove', {
-                            field: 'id',
-                            values: [row._id]
-                            });
+                              field: '_id',
+                              values: [row._id]
+                              });
                         }
                         else{
                             showNotification("Delete failed",res.description || "System busy");
                         }
                         },
                     "json");
-        }
+        },
+      'click .create-appointment':function (evt, value, row, index) {
+            $.ajax({
+              url : "/admin/appointment?contactid=" + row._id,
+              type: "GET",
+              success:(data)=>{
+                $("#dashboard").html(data.html);
+               },
+              error: (err)=>{
+                console.error(err);
+                showNotification("System busy","Please try latter."); 
+              }
+
+            });
+
+
+        
+      },
+      'click .edit-a-contact':function (evt, value, row, index) {
+         alert("to do next");
+      },
+
     };
   function initTable(){
     $table.bootstrapTable('destroy').bootstrapTable({
       height: 550,
       columns: [
-        [{
+        [
+         
+        {
           field: 'state',
           checkbox: true,           
           align: 'center'
@@ -90,18 +125,24 @@
           field:"companyname",
           title: 'Company or Organization',
           align: 'center',
-          sortable:true
+          sortable:false
         }, {
           field:"email",
           title: 'Email',
           align: 'center',
-          sortable: true
-        } , {
+          sortable: false
+        } , 
+        {
+          field:"phonenum",
+          title: 'Phone',
+          align: 'center',
+          sortable: false
+        } ,{
             field: 'operate',
           title: 'Operation',
           align: 'center',
           clickToSelect: false,
-          events: window.operateEvents,
+          events:  operContactEvents,
           formatter: operateFormatter
            
         } 
@@ -111,12 +152,12 @@
 
    function operateFormatter(value, row, index) {
     return [
-      '<a class="like pr-3" href="javascript:void(0)" title="PRE-REGISTER AN APPOINTMENT">',
+      '<a class="create-appointment pr-3" href="javascript:void(0)" title="PRE-REGISTER AN APPOINTMENT">',
       '<i class="fa fa-calendar-check"></i>',
       '</a>  ',
-      '<a class="edit-a-contact pr-3" href="javascript:void(0)" title="EDIT">',
-      '<i class="fa fa-edit"></i>',
-      '</a>',
+      //'<a class="edit-a-contact pr-3" href="javascript:void(0)" title="EDIT">',
+     // '<i class="fa fa-edit"></i>',
+     // '</a>',
       '<a class="delete-a-contact" href="javascript:void(0)" title="DELETE">',
       '<i class="fa fa-trash"></i>',
       '</a>'
@@ -128,10 +169,34 @@
   }); */
   $(document).ready(()=>{
     initTable();
-    console.log("i am ready");
-
     
-  
+  });
+
+  $(function(){
+    $("#removebatch").click(function(){
+       const ids = $.map($table.bootstrapTable('getSelections'),function(row){
+            return row._id;
+       });
+       $.post("/contact?_method=delete",{ids:JSON.stringify(ids)},
+       (res)=>{
+        if(res.result && res.result==='ok'){
+          showNotification("Delete successed",res.description || "Operation sucess");
+           $table.bootstrapTable('remove',{field:'_id',values:ids});
+        }
+        else{
+          showNotification("Delete failed",res.description || "Operation failed");
+        }      
+      },'json');
+
+    });
+  });
+  $("#uploadfile").change(function(){
+     
+      const file = $("#uploadfile").val();
+      if(file){
+        $("#formupload").submit();
+      }
+
   });
 </script>
 </div>

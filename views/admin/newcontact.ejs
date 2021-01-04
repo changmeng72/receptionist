@@ -3,25 +3,33 @@
         <div class="card-title text-center"><h2>Create a new contact</h2></div>
         
         <div>
-            <form action=<%= pagedata.url %> method="post" id="contact-form">
+            <form action= "<%= pagedata.url %>" method="post" id="contact-form">
 
                 <div class="input-style has-icon input-style-1 input-required">
                             <i class="input-icon fa fa-user"></i>
                             <span>Name</span>
                             <em>(required)</em>
-                            <input type="name" placeholder="Name" name="contactname" id="contactname">
+                            <input type="text" placeholder="Name" name="contactname" id="contactname" required 
+                            value="<%= pagedata.visit.firstname %>">
                 </div> 
 
                 <div class="input-style has-icon input-style-1 input-required">
                     <i class="input-icon fa fa-at color-theme"></i>
                     <span>Email</span>                    
-                    <input type="name" placeholder="Email" name="email" id="email">
+                    <input type="email" placeholder="Email" name="email" id="email"  value="<%= pagedata.visit.email %>" >
                 </div>
+
+                <div class="input-style has-icon input-style-1 input-required">
+                    <i class="input-icon fa fa-phone color-theme"></i>
+                    <span>Phone Number</span>                    
+                    <input type="tel" placeholder="Phone Number" name="phonenum" id="phonenum"  value="<%= pagedata.visit.phonenum%>">
+                </div>
+
 
                 <div class="input-style has-icon input-style-1 input-required">
                     <i class="input-icon fa fa-building"></i>
                     <span>Company Name</span>                    
-                    <input type="text" placeholder="Company Name" id="companyname">
+                    <input type="text" placeholder="Company Name" id="companyname"  value="<%= pagedata.visit.companyname %>">
                 </div> 
                 
                 
@@ -40,11 +48,13 @@
     $("#contact-form").submit((evt)=>{
         evt.preventDefault();
 
+        
         $.ajax({
             url:$("#contact-form").attr('action'),
             type: $("#contact-form").attr('method'),
             data:{contact:JSON.stringify({name: $("#contactname").val(),
-                  email:$("#email").val(),
+                  email:$("#email").val(),                  
+                  phonenum:$("#phonenum").val(),
                   companyname:$("#companyname").val(),
                   })},
             error:(err)=>{
@@ -53,7 +63,7 @@
             success:(res)=>{
                 if(res.result==='ok'){
                     $("#contact-form").trigger('reset');
-                    showNotification("Creation successful","New contact is created!");
+                    showNotification("Creation successful",res.description);
                 }
                 else{
                     showNotification("Creation failed",res.description);

@@ -1,0 +1,136 @@
+<%- include('./../sticky_html_start') %>
+<div id="page">
+    
+    <!-- footer is removed-->
+    
+    <div class="page-content header-clear-medium " style="padding-top:80px;background-color: white; width:100%; margin-left:0px; " id="content">
+        
+      
+    
+        <div id="dashboard" style="margin:auto;">
+<!--div class="text-center text-uppercase mb-5"> <h1><%= data.title %></h1></div-->
+ 
+     <%if(data.photo) {%>
+	<div id="demo-basic"  > </div>
+	<%}%>
+	<div id="result"></div>	
+	<div  style = "display:flex; flex-direction: row;justify-content: center;">
+		<button type="button"  class="btn btn-primary text-uppercase pt-0 pb-0 rounded-s mr-3" id="btn-submit"><i class="fas fa-upload "></i>Submit</button>
+	
+		<form id="photo-uploadform" action="/admin/myphoto" method="post"  enctype="multipart/form-data" style="display:inline-block">
+			<label for="photo-uploadfile" class="btn btn-primary shadow-s rounded-s text-uppercase mb-0  pt-0 pb-0 "><i class="fas fa-upload "></i>Upload</label>
+			<input type="file" id="photo-uploadfile" name="tempPhoto" style="display: none" accept=".jpg">
+			<input type='text' name="tempflag" hidden value="<%=data.tempPhoto%>" id="tempPhotoFlag">
+			<input type='text' name="tempflag2" hidden value="<%=data.photo %>" id="tempPhotoFlag2">
+		</form>
+	
+</div>
+</div>      
+      
+</div>
+
+
+ <%- include('./../sticky_html_end') %>
+
+<script type="text/javascript" src="scripts/jquery.js"></script>
+<script type="text/javascript" src="scripts/bootstrap.min.js"></script>
+<script type="text/javascript" src="scripts/custom.js"></script>
+<script type="text/javascript" src="/js/croppie.js"></script>
+<link rel="stylesheet" href="/styles/croppie.css" />
+<script>
+	var basic;
+
+	
+
+
+function popupResult(result) {
+	var html;
+
+	if (result.html) {
+		html = result.html;
+		
+	}
+	if (result.src) {
+		
+		$.ajax({
+			url:"/admin/myphoto?_method=put",
+			type:"POST",
+			data:{image:result.src,tempPhoto:$('#tempPhotoFlag').val()}, 
+			success:(res)=>{
+				alert("successful");
+			},
+			error:(err)=>{
+
+				alert("err:" + err);
+			}
+		});
+	}
+}
+
+
+$(document).ready(()=>{
+	
+		basic = $('#demo-basic').croppie({
+		viewport: {
+			width: 250,
+			height: 250,
+			
+		},
+		boundary: {
+			width:640,
+			height: 480
+		}
+		});
+		basic.croppie('bind', {
+		url: "<%=data.photo %>",
+
+		});
+
+		$('.basic-result').on('click',  function() {
+		
+		var size = 'viewport';
+		basic.croppie('result', {
+			type: 'canvas',
+			size: size,
+			
+		}).then(function (resp) {
+			popupResult({
+				src: resp
+			});
+		});
+
+	 
+
+});
+	
+$("#btn-submit").click( (evt)=>{
+var size = 'viewport';
+ basic.croppie('result', {
+	type: 'canvas',
+	size: size,
+	circle:false
+}).then(function (resp) {
+	
+	popupResult({
+		src: resp
+	});
+}); 
+});
+
+
+});
+$("#photo-uploadform").change(function(){
+         
+          const file = $("#photo-uploadfile").val();
+          if(file){
+            
+             $("#photo-uploadform").submit();
+             $("#photo-uploadfile").val("");
+          }
+        
+    
+      });
+	 
+</script>
+</body>
+</html>

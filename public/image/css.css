@@ -1,0 +1,49 @@
+.description {
+  left: 50%;
+  position: absolute;
+  top: 45%;
+  transform: translate(-50%, -55%);
+  text-align: center;
+}
+.description h1 {
+  color: #6ab446;
+}
+.description p {
+  color: #fff;
+  font-size: 1.3rem;
+  line-height: 1.5;
+}
+
+
+header {
+	#background-color: red;
+	position: relative; 
+	border:10px sold #ab446; 
+	width:40%;
+	left:30%
+	text-align:center
+	
+}
+.row {
+	
+	width:80%;
+	margin: auto;
+	height:40%;
+	
+
+	 
+}
+
+.h-center	{
+	margin: auto;
+}
+.row button {
+	
+	 
+	vertical-align:center;
+	 box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+   
+   margin: auto;
+	 height:80%;
+	 width:100%
+}

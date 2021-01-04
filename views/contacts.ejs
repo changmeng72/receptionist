@@ -5,7 +5,7 @@
         <a href="/" class="header-title">
             <img src="/image/logo.png" class="max-auto mr-1 scale-box" height="30"></img>ABC company
         </a>
-        <a href="/" data-back-button class="header-icon header-icon-1"><i class="fas fa-arrow-left fa-3x" ></i>
+        <a href="/" data-back-button class="header-icon header-icon-1"><i class="fas fa-arrow-left fa-1x" ></i>
             <!--img src="/image/cancel.png" height="50"/> </a-->     
         </a>   
     </div>
@@ -25,15 +25,16 @@
                  <div class="row">
                     <% 
                     for(const contact of contacts) { %>
-                        <%  let contactname =contact.firstname + " " + contact.lastname;   
-                            let photo = contact.photo? ("/image/" +  contact.id + ".png"):("/image/logo.png");%>
-                        <div class="col-sm-3 col-12"  data-filter-item data-filter-name="<%= contact.lastname.toLowerCase().trim() + " " + contact.firstname.toLowerCase()%>">
+                        <%  let contactname =contact.firstname;   
+                            let photo = contact.photo? ("/staff/image/" +  contact.id + "_thumbnail.png"):("/image/logo.png");%>
+                        <div class="col-sm-3 col-12"  data-filter-item data-filter-name= <%= contact.firstname.toLowerCase() %>">
                             <div class="card  mr-1 pl-0 pr-0"  data-contactid= "<%= contact.id %>" data-contactname= '<%= contactname %>'>
                                 <img class="card-img-top" src= <%= photo %> alt="photo" style="border-bottom:1px solid gray;">
                                 <div class="card-body">
                                     <dl>
                                         <dt><%= contactname %></dt>
-                                        <dd><%= contact.position %></dd>
+                                        <dd><%= contact.position %><br><%= contact.department %></dd>
+                                          
                                     </dl>
                                 </div>
                             </div>
@@ -85,8 +86,8 @@
             });
             /* after confirm goto next page*/
             $("#menu-confirm-ok").click((evt)=>{
-                console.log("click again");
-                window.location.href = "visitor/info?contactid="+contactid+"&contactname="+contactname;
+                
+                window.location.href = "<%= url %>?contactid="+contactid+"&contactname="+contactname;
             });
             /*when search box is empty ,all item should showen*/
         });
