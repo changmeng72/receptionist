@@ -1,0 +1,58 @@
+
+<%- include('sticky_html_start') %>
+<div id="page">
+
+    <div class="header header-fixed header-logo-center " style="background-color:#f0f0f0;">
+        <a href="/" class="header-title">
+            <img src="/image/logo.png" class="max-auto mr-1 scale-box" height="30"></img>ABC company
+        </a>
+        <a href="#" data-back-button class="header-icon header-icon-1 " style="padding-top:5px"><i class="fas fa-times  fa-2x" ></i></a>
+            <!--img src="/image/cancel.png" height="50"/> </a-->
+        
+    </div>
+
+    <!-- footer is removed-->
+
+    <div class="page-content header-clear-medium " style="padding-top:50px; width:80%; margin:auto">
+        <div id="dashboard" class="content">
+            <!-- to add your content here -->
+        </div>
+       <button onclick="xxxxx()">do</button>
+    </div>   
+
+</div>  
+
+ <%- include('sticky_html_end') %>
+
+    <script>
+        function xxxxx(){
+            $.ajax({url:"/test/photo",type:"GET"}).done((res)=>{
+                $("#dashboard").html(res);                
+
+            });
+           
+          
+        }
+
+        function frame_getPage(url){
+             $.ajax({url:url,type:"GET"}).done((res)=>{
+                $("#dashboard").html(res).fail((xhr,status,err)=>{
+                    console.error(err)
+                    window.location.href="/"
+                });                
+
+            
+        });}
+        function getPage(url){
+
+            alert("dddd" + url);
+            
+            window.location.href=url;               
+            
+       }
+
+    </script>
+   
+ 
+</body>
+</html>

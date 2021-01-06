@@ -85,10 +85,10 @@
         if(window.qrcode) {
 
                 qrscanner = window.qrcode;
-                console.log("qr init: " + qrscanner);
+               
                 navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).
                 then(handleSuccess).catch(handleError); 
-                console.log("after get media");
+                
                 
                 
                 qrcanvas = document.getElementById('qr-canvas');
@@ -96,7 +96,7 @@
                 qrscanner.callback = (res) => {
                 if (res) {
                 
-                        console.log("res: " + res);
+                         
                         scanning = false;
 
                         video.srcObject.getTracks().forEach(track => {
@@ -110,14 +110,16 @@
                             let targeturl = "/visitor/qr?type=1";
                             let type=1;
 
-                            if($("#pagetitle").text().search("Check")>-1)
+                            if($("#pagetitle").text().search("Check")>-1){
                                 targeturl = "/visitor/checkout";
+                                type=3;
+                            }
                             else if($("#pagetitle").text().search("Scan")>-1){
                                 targeturl = "/visitor/qr?type=2";
                                 type = 2;
                             }
                         
-                            console.log();
+                            
                         
 
                         
@@ -126,7 +128,7 @@
                                                     console.error(err);   
                                                     notification.innerHTML="System busy,please try latter" + err ;                     
                             } else {                                            
-                                console.log("data: "+ data.result); 
+                                  
                                 if(data.result==="ok"){
                                     if(type===2){
                                         $("#confirm-menu-title").html("Visitor Informaiton");
@@ -135,16 +137,24 @@
                                         "<tr><td>Email</td><td>"  ,data.email,"</td><td></tr>",
                                         "<tr><td>Company Name</td><td>"  ,data.companyname,"</td><td></tr></tbody></table>"
                                         ].join(""));
-                                    }else{ //type=1
+                                    }else if(type===1){ //type=1
                                         $("confirm-menu-title").html("Preregistered Appointment Informaiton");
-                                        $("#alert-infomation").html(['table style="text-align:left"><tbody><tr><td>Name</td><td>',
+                                        $("#alert-infomation").html(['table style="text-align:left"><tbody><tr><td style="margin-right:10px">Name</td><td>',
                                         data.name, "</td><td></tr>",
                                         '<tr><td style="margin-right:10px">Email</td><td>'  ,data.email,"</td><td></tr>",
                                         '<tr><td style="margin-right:10px">Company Name</td><td>'  ,data.companyname,"</td><td></tr>",
-                                        '<tr><td style="margin-right:10px">Company Contact Name</td><td>'  ,data.contactname,"</td><td></tr>",
-                                        '<tr><td style="margin-right:10px">Company Appointment Time</td><td>'  ,data.preregistertime,"</td><td></tr></tbody></table>"
+                                        '<tr><td style="margin-right:10px">Contact Name</td><td>'  ,data.contactname,"</td><td></tr>",
+                                        '<tr><td style="margin-right:10px">Appointment Time</td><td>'  ,data.preregistertime,"</td><td></tr></tbody></table>"
                                         ].join(""));
-                                    }                                    
+                                    } 
+                                    else{ //check out
+                                        $("confirm-menu-title").html("Check out successfully");
+                                        $("#alert-infomation").html(['table style="text-align:left"><tbody><tr><td style="margin-right:10px">Name</td><td>',
+                                        data.name, "</td><td></tr>",
+                                        '<tr><td style="margin-right:10px"> Contact Name</td><td>'  ,data.contactname,"</td><td></tr>",
+                                        '<tr><td style="margin-right:10px">Check Out Time</td><td>'  ,data.checkout,"</td><td></tr></tbody></table>"
+                                        ].join(""));
+                                    }                                   
                                     $("#menu-confirm").showMenu(); 
                                      
                                     $('body').find('.menu-hider').addClass('no-click');                                
@@ -189,14 +199,14 @@
 
 
 function handleSuccess(stream){
-        console.log("video init...");
+         
         video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
         video.srcObject = stream;
         video.play();
         
         scanning = true;
         video.style.visibility = true;
-        console.log("#video-overlay-shader: " +  $("#video-overlay-shader").attr("hidden"));
+         
         $("#video-overlay-shader").removeAttr("hidden");
         notification.style.display = "none"
         tick();
@@ -226,8 +236,7 @@ try {
      qrscanner.decode();
 } catch (e) {
     counter += 1;
-    console.log("err: " +  e);
-    console.log("qrscanner: " + qrscanner);
+     
     let m = e+" ";
     if((counter%3===0) ||
      (m.search("found 1")>-1 && counter%2===0) ||
@@ -264,7 +273,7 @@ function getJSON(data,url, callback){
 
     let status = xhr.status;
 
-    console.log("ajax status:" + status);
+     
 
     if (status == 200) {
         callback(null, xhr.response);
@@ -274,7 +283,7 @@ function getJSON(data,url, callback){
     };
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhr.send(JSON.stringify({ "qr":data}));
-    console.log("ajax: " + data);
+     
 }
 
 

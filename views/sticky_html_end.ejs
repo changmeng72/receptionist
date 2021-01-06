@@ -9,11 +9,11 @@
 -->
     <div id= "data-menu-notifiction" class="menu menu-box-modal rounded-m" data-menu-height="200" 
             data-menu-width="330" style="height:200px; width:330px;display:block;">
-            <h1 class="text-center mt-3 pb-1 " id="data-app-confirm-title">Notification</h1>
+            <h1 class="text-center mt-3 pb-1 " id="data-app-confirm-title"></h1>
             <p class="boxed-text-1 text-center " id = "data-app-confirm-prompt">
-            Do you want to visit abc?
+            
             </p>
-            <div class="row mr-3 ml-3 mb-0">
+            <div class="mr-3 ml-3 mb-0 text-center">
                  <a id="menu-confirm-ok" href="#" class="close-menu btn btn-sm btn-full button-s shadow-1 rounded-s text-uppercase font-900 bg-green1-dark">OK</a>
             </div>
     </div>
@@ -25,6 +25,12 @@
 <script type="text/javascript" src="/scripts/jquery.js"></script>
 <script type="text/javascript" src="/scripts/bootstrap.min.js"></script>
 <script type="text/javascript" src="/scripts/custom.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+
 <script src="https://kit.fontawesome.com/48cd67222b.js" crossorigin="anonymous"></script>
 <script>
 
@@ -45,17 +51,19 @@
                 window.location.href = "visitor/qr";
             
             });
-        }
-        catch(err){
-            console.error(err);
-        }
-        /*navigator */
-        $(function(){
+       
+      
        
        $(".vertical-nav a").on("click",(evt)=>{
-        console.log("running:" + $(evt.currentTarget).attr("data-href").search("contact"));
-           if($(evt.currentTarget).attr("data-href").search("contact")>-1){
-               console.log("ajax");
+       // console.log("running:" + $(evt.currentTarget).attr("data-href").search("contact"));
+         /*  if($(evt.currentTarget).attr("data-href").search("contact")>-1 || 
+              $(evt.currentTarget).attr("data-href").search("employee")>-1 ||
+              $(evt.currentTarget).attr("data-href").search("appointment")>-1||
+              $(evt.currentTarget).attr("data-href").search("visit")>-1)*/
+              console.log($(evt.currentTarget).attr("data-href"));
+              if($(evt.currentTarget).attr("data-href").search("logout")>-1 )
+                 window.location.href = $(evt.currentTarget).attr("data-href");
+              else
               $.ajax({
                    url:$(evt.currentTarget).attr("data-href"),
                    type:'GET',
@@ -64,19 +72,21 @@
                    },
                    success:(data)=>{
                        console.log("data");
-                       $("#dashboard").html(data);
-                   }
-                });
-               
+                       if(data.result==='ok')
+                            $("#dashboard").html(data.html);
+                       else
+                          window.location.href = data.url;
+                   },
+                  
+                }); 
 
-           }
-           else
-              window.location.href = $(evt.currentTarget).attr("data-href");
-       });
-
-        });
-
-}); 
+            }); 
+    }
+        catch(err){
+            console.error(err);
+        }
+        
+    });
     
 function showNotification(title,prompt){
 

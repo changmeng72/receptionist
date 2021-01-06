@@ -5,7 +5,7 @@
         <a href="/" class="header-title">
             <img src="/image/logo.png" class="max-auto mr-1 scale-box" height="30"></img>ABC company
         </a>
-        <a href="/" data-back-button class="header-icon header-icon-1"><i class="fas fa-arrow-left fa-1x" ></i>
+        <a href="/"  class="header-icon header-icon-1"><i class="fas fa-arrow-left fa-1x" ></i>
             <!--img src="/image/cancel.png" height="50"/> </a-->     
         </a>   
     </div>
@@ -15,34 +15,19 @@
     <div class="page-content header-clear-medium " style="padding-top:50px;width:80%; margin:auto;position:relative">
         <div class="content" >
             <div style="height:30px;"></div>
-            <div class="text-center font-35 font-weight-900 color-blue2 caption-app "><p>Please wait, we are sending message to your contact...</p></div>
+            <!--div class="text-center font-35 font-weight-900 color-blue2 caption-app "><p>Print your badge</p></div -->
+            <div class="text-center font-35 font-weight-900 color-blue2 caption-app "><p>Welcome to ABC</p></div>
             <div class="divider diverder-margins bg-blue2-dark mt-3"></div>
             <div class="my-content"  >
-                <div class="video-zone" style="min-height: 100px; text-align: center; position: relative;margin:auto; ">
-                    <div id="data-waiting-notification"   class="card card-style" style="display:block">
-                        <img class="card-image-top" src = "/image/waiting.gif"/>
-                        <div class="card-body text-center" >
-                            <div class="class-text"><p>Please wait a moment...</p></div>
-                        </div>
-                    </div>
-                   <div id="menu-notification-1" class="card card-style rounded-m" 
-                        data-menu-height="300"
-                        data-menu-width="300" hidden>
-                                <h1 class="text-center mt-4"><i class="fa-3x fas fa-envelope-squar color-green2-dark"></i>
-                                Sent!</h1>
-                                <p class="boxed-text-l">
-                                Your contact is notified, please wait for the greeting from your contact.
-                                </p>
-                                <a href="/" class=" btn btn-m btn-center-m button-s shadow-l rounded-s text-uppercase font-900 bg-green1-light mb-3">OK</a>
-                    </div >
+                
                     
-                    <div id="qrcode-zone" class="card card-style rounded w-400" style="position:relative" hidden>                        
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=<%= qrstring%>" class="mb-3 mt-5" style="margin:auto" width="200" id="my_qrcode">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item h5" id="visitor-name"> </li>
-                            <li class="list-group-item h5" id="contact-name"></li>
-                            <li class="list-group-item h5" id="checkin-time"></li>
-                            <li><a href="#" id="data-btn-print-1"class=" btn btn-m btn-center-m button-s shadow-l rounded-s text-uppercase font-900 bg-green1-light mb-3">PRINT</a></li>
+                    <div id="qrcode-zone" class="card card-style rounded" style="width: 400px; margin:auto" >                        
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=<%= data.qrcode %>" class="mb-3 mt-5" style="margin:auto" width="200" id="my_qrcode">
+                        <ul class="list-group list-group-flush" style="margin:auto">
+                            <li class="list-group-item h5" id="visitor-name">Name : <%= data.visitorname %> </li>
+                            <li class="list-group-item h5" id="contact-name">Contact Name: <%= data.contactname %></li>
+                            <li class="list-group-item h5" id="checkin-time">Checkin Time:<%= data.checkin %></li>
+                            <li><a href="#" id="data-btn-print-1"class=" btn btn-m btn-center-m button-s shadow-l rounded-s text-uppercase font-900 bg-green1-light mb-3">SKIP</a></li>
                         </ul>
                     </div> 
 
@@ -60,93 +45,10 @@
 
     <SCRIPT>
 
-        var maxwaitTime= 6;
-        /*
-        function task(){
-            setInterval(function(){getJSON('/visitor/checkstatus', (err, data) => {
-
-                        console.log(Date.now());
-                        if (err != null) {
-                                console.error(err);                        
-                        } else {
-                           //const result =  JSON.parse(data).result;
-                            maxwaitTime --;
-                            if(maxwaitTime==0){
-                               alert("Sorry, wait too long ,please contact an assistant for help...");
-                               window.location.href="/";
-                            }
-                            else{
-                               if(data.result==="OK"){
-                                  alert("Your contact is notified,please wait for greeting...");
-                                   window.location.href="/";
-                                }
-                                
-                            }
-
-
-                        }})},5000);
-           
-        }
-        function getJSON(url, callback){
-
-            let xhr = new XMLHttpRequest();
-
-            xhr.open('GET', url, true);
-            xhr.responseType = 'json';
-
-            xhr.onload = () => {
-
-            let status = xhr.status;
-
-            if (status == 200) {
-                 callback(null, xhr.response);
-             } else {
-                    callback(status);
-            }
-        };
-
-        xhr.send();
-        }
-       */
-        task = () => $.ajax({
-            url:"/visitor/checkstatus",
-            datatype:"json",
-            type:"GET"
-        }).done((json)=>{
-            console.log(json);
-            if(json.result==="OK"){
-                //alert("Your contact is notified,please wait for greeting...");
-                $("#data-waiting-notification").attr("hidden","");
-                //$("#menu-notification-1").removeAttr("hidden");
-                 console.log(json.qrcode.checkintime);
-               
-                //$("#my_qrcode").attr("src",urlstr);
-                $("#visitor-name").html("Visitor Name: <strong>" + json.visitorname + "</strong>");
-                $("#contact-name").html("Contact Name: <strong>" + json.contactname  + "</strong>");
-                $("#checkin-time").html("Checkin Time: <strong>" + json.qrcode.checkintime + "</strong>");
-                $("#qrcode-zone").removeAttr("hidden");
- 
-               
-                
-               // $("#bsnote").modal();
-                //window.location.href="/";
-            }
-            else{
-                
-                setTimeout(task,3000);
-            }
-        })
-        .fail((xhr,status,err)=>{
-            console.log("fail recv err :" + err);
-            console.log("fail recv status :" + status);
-        })
-        .always((xhr,status)=>{
-            console.log("recv response :" + status);
-        });
-       
+         
         
         $(document).ready(()=>{
-            task();
+             
             $("#data-btn-print-1").click(()=>{
                 window.location.href="/";
             });

@@ -1,0 +1,171 @@
+
+           <div style="height:30px;"></div>
+           <div class="text-center font-35 font-weight-900 color-blue2 caption-app " id="pagetitle"><p > Take a photo</p></div>
+           <div class="text-center font-35 font-weight-900 color-blue2 caption-app " style="display:none"><p id="pagetitle"> Take a picture of your ID</p></div>
+           <div class="divider diverder-margins bg-blue2-dark mt-3"></div>
+           <div class="my-content" >
+               <div class="video-zone" style="width: 80%; min-height: 100px; text-align: center; position: relative;margin:auto;">
+                   <div id="notification"   class="card card-style" style="display:block">
+                       <img class="card-image-top" src = "/image/waiting.gif"/>
+                       <div class="card-body text-center" >
+                           <div class="class-text"><p>Camera is starting up, please wait a moment...</p></div>
+                       </div>
+                   </div>
+
+                   <video id="video" autoplay    style=" width:100%; display:none  "> </video> 
+
+                   <div id="video-overlay-bar-shader" style="display:none" > 
+                       <div class="qr-shaded-region" id="qr-shaded-region_1" style="position: absolute;  background: rgba(0, 0, 0, 0.4); top: 0px; left: 0px; width: 20%;">
+                         </div>
+                        <div class="qr-shaded-region" id="qr-shaded-region_4" style="position: absolute;  background: rgba(0, 0, 0, 0.4); top: 0px;   width: 20%;">
+                         </div>
+                   </div>
+                   <div id="video-overlay-line-shader"  > 
+                    <div class="line-shade-region" id="qr-shaded-region_1" style="position: absolute;  background:transparent;  border:1px dotted green; top:10%; left:20%;bottom:10%;right:20%">
+                      </div>
+                 </div>
+<!--canvas -->
+                   <canvas style="display:none;" id='photocanvas'></canvas> 
+                   <canvas   id='canvas2' style=" display:none  "></canvas> 
+                    <!--input type="file" name="image" accept="image/* capture=camera"-->
+                   <a href="#" class="btn btn-primary rounded text-uppercase mt-1" id="take-a-photo" style="display:none"><i class="fas fa-camera" ></i>Take a Photo</a>
+                   <a href="#" class="btn bg-green1-dark rounded text-uppercase mt-1 mr-1" id="takethisphoto" style="display:none"><i class="fas fa-check"></i>Take this one</a>
+                   <a href="#" class="btn btn-warning rounded text-uppercase mt-1" id="retakephoto" style="display:none"><i class="fas fa-redo"></i>Retake one</a>
+                   
+                   <!--input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();" accept="image/*" capture="camera" /-->
+              </div>
+
+              <script>
+                  var visitorURL = "/visitor/photo";
+                  function takePhotoID(){
+                    
+                    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }} ).then(handleSuccess).catch(handleError);
+                    visitorURL = "/visitor/id";
+                    
+                    $("#retakephoto").hide();
+                    $("#takethisphoto").hide();                                           
+                    $("#photocanvas").hide();
+                    
+                    
+                  }
+                  
+                  $(document).ready(()=>{
+                    navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }} ).then(handleSuccess).catch(handleError);
+
+
+                    $("#take-a-photo").click(()=>{                         
+                        var dpr = window.devicePixelRatio+0.1;
+// Get the size of the canvas in CSS pixels.
+                      
+                       photocanvas.height = video.clientHeight;
+                       photocanvas.width  = video.clientWidth;
+                       let c =  photocanvas.getContext('2d');
+                       c.drawImage(video,0, 0,video.videoWidth,video.videoHeight,0,0,video.clientWidth,video.clientHeight);
+                       $("#video").hide();                       
+                       $("#photocanvas").show();
+                       $("#take-a-photo").hide();
+                       $("#retakephoto").show();
+                        $("#takethisphoto").show();
+                        $("#video-overlay-shader").hide();                       
+                        }
+                    );
+
+
+                     $("#takethisphoto").click(()=>{
+                       canvas2.width = "200";
+                       canvas2.height =  Math.round(photocanvas.height*200/photocanvas.width);
+                        
+                        let cx = canvas2.getContext('2d');
+                        cx.drawImage(photocanvas,0,0,photocanvas.width,photocanvas.height,0,0,canvas2.width,canvas2.height);
+                        $("#photocanvas").hide();
+                        $("#takethisphoto").hide();
+                        $("#retakephoto").hide();  
+
+                        stopStreamedVideo(video);     
+                        photocanvas.toBlob((blob)=>{
+                             $.ajax({
+                                 url:visitorURL,
+                                 type:"POST",
+                                 data:blob,
+                                 processData: false,
+                                 contentType: false
+                             },"image/jpeg", 0.8).done((res)=>
+                             {
+                               alert("uploadol:" + visitorURL); 
+                                //frame_getPage(res.url);
+                                if(visitorURL==="/visitor/photo")
+                                  takePhotoID();
+                                else{
+                                  getPage("/visitor/agreement");
+                                }
+
+                             }
+
+                             ).fail((xhr,status,err)=>{
+                                 alert(err);
+                                 stopStreamedVideo(video);    
+                                 window.location.href="/";
+                             })
+                         });
+
+
+                     });
+
+                     $("#retakephoto").click(()=>{
+
+                        $("#take-a-photo").show();
+                        $("#retakephoto").hide();
+                        $("#takethisphoto").hide();
+                        $("#video").show();                       
+                        $("#photocanvas").hide();
+                        $("#video-overlay-shader").show();
+
+
+                     });
+
+                  });
+                function handleSuccess(stream){
+                        
+                       // $("#video").attr("playsinline", true); // required to tell iOS safari we don't want fullscreen
+                        video.srcObject = stream;
+                        video.play();                        
+                        $("#video").show();
+                        
+                        //console.log("#video-overlay-shader: " +  $("#video-overlay-shader").attr("hidden"));
+                       // $("#qr-shaded-region_4").css({left:video.clientWidth*0.8});
+                       // $("#qr-shaded-region_4")[0].width = video.clientWidth - $("#qr-shaded-region_4").style.left;
+                        
+                        $("#notification")[0].style.display = "none"
+                        
+                        video.addEventListener('loadeddata',()=>{
+                         //   alert(video.clientHeight);
+                        $("#qr-shaded-region_4").height( video.clientHeight);
+                        $("#qr-shaded-region_1").height( video.clientHeight);
+                        $("#qr-shaded-region_4").css("left", Math.round(video.clientWidth*0.8) + "px");
+                        $("#video-overlay-shader").show();
+                        $("#take-a-photo").show();
+
+                        });
+                         
+                    }
+                    function handleError(err){
+
+                        alert(err);
+                        window.location.href="/";
+
+                    }
+
+                   
+
+                function stopStreamedVideo(videoElem) {
+                        const stream = videoElem.srcObject;
+                        const tracks = stream.getTracks();
+
+                        tracks.forEach(function(track) {
+                            track.stop();
+                        });
+
+                        videoElem.srcObject = null;
+                }
+              </script>
+         </div>
